@@ -1,0 +1,2 @@
+import blackjack
+blackjack.test()
