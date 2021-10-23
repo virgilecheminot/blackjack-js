@@ -10,7 +10,7 @@
   </a>.
 </div>
 
-#
+
 ## Règles du jeu :
 On s’intéresse à une version simplifiée du jeu de Blackjack, qui se joue avec plusieurs paquets de 52 cartes. Chaque paquetde 52 cartes est divisé en 4 couleurs (pique, cœur, trèfle, carreau), avec 13 cartes par couleur, numérotées de 1 (as) à 10, puis valet, dame, roi.
 
