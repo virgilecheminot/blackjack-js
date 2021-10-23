@@ -61,7 +61,39 @@ def piocheCarte(p, x = 1):
     piochees = []
     for i in range(x):
         piochees.append(p.pop(0))
-    return piochees, p
+    return piochees
+    # pick, p = piocheCarte(initPioche(2), 2)
+    # print(pick, len(p))
 
-# pick, p = piocheCarte(initPioche(2), 2)
-# print(pick, len(p))
+## JOUEURS ET SCORES
+
+def initJoueurs(n):
+    nomsJoueurs = []
+    for i in range(n):
+        nomsJoueurs.append(input(f'Nom du joueur {i+1} : '))
+    return nomsJoueurs
+
+def initScores(joueurs, v=0):
+    scores = {}
+    for i in range(len(joueurs)):
+        scores[joueurs[i]] = v
+    return scores
+
+def premierTour(joueurs):
+    scores = initScores(joueurs)
+    for i in joueurs:
+        cartes2 = piocheCarte(initPioche(len(joueurs)), 2)
+        for e in cartes2:
+            scores[i] += valeurCartes(e)
+    return scores
+
+def gagnant(scores):
+    scoreMax = 0
+    gagnant = ''
+    for i in scores:
+        if 21 > scores[i] > scoreMax:
+            gagnant = i
+            scoreMax = scores[i]
+        elif scores[i] == 21:
+            return i
+    return gagnant

@@ -1,2 +1,1 @@
-import blackjack
-blackjack.test()
+from blackjack import *
