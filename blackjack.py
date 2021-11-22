@@ -134,4 +134,4 @@ def tourComplet(joueurs,nbtour,scores,pioche):
     for i in joueurs:
         tourJoueur(i,nbtour,scores,pioche)
 
-def partieFinie():
+# def partieFinie():
