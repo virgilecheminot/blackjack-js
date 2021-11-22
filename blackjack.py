@@ -79,6 +79,12 @@ def initScores(joueurs, v=0):
         scores[joueurs[i]] = v
     return scores
 
+def initVictoires(joueurs):
+    victoires = {}
+    for i in joueurs:
+        victoires[i] = 0
+    return victoires
+
 def premierTour(joueurs):
     scores = initScores(joueurs)
     for i in joueurs:
@@ -86,10 +92,6 @@ def premierTour(joueurs):
         for e in cartes2:
             scores[i] += valeurCartes(e)
     return scores
-
-def victoire(joueur):
-    gagnant = joueur
-    return gagnant
 
 def gagnant(scores):
     scoreMax = 0
@@ -111,7 +113,7 @@ def continuer():
     else:
         return True
 
-def tourJoueur(j,nbtour,scores,pioche):
+def tourJoueur(j,nbtour,scores,joueurs,pioche):
     print(nbtour)
     print(j)
     print('score partie: ', scores[j])
@@ -121,17 +123,29 @@ def tourJoueur(j,nbtour,scores,pioche):
         val = valeurCartes(carte)
         scores[j] += val
         if scores[j] == 21:
-            victoire(j)
+            joueurs = []
             return
         elif scores[j] > 21:
-            del scores[j]
+            joueurs.remove(j)
+            return
             
     if not replay:
-        del scores[j]
+        joueurs.remove(j)
         return
 
 def tourComplet(joueurs,nbtour,scores,pioche):
     for i in joueurs:
         tourJoueur(i,nbtour,scores,pioche)
 
-# def partieFinie():
+def partieFinie(joueurs):
+    if len(joueurs) == 0:
+        return True
+    else :
+        return False
+
+def partieComplete(joueurs,nbtour,scores,pioche,victoires):
+    while not partieFinie(joueurs):
+        tourComplet(joueurs,nbtour,scores,pioche)
+    if partieFinie(joueurs):
+        victorieux = gagnant(scores)
+        victoires[victorieux] += 1
