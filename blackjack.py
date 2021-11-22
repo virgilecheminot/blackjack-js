@@ -87,6 +87,10 @@ def premierTour(joueurs):
             scores[i] += valeurCartes(e)
     return scores
 
+def victoire(joueur):
+    gagnant = joueur
+    return gagnant
+
 def gagnant(scores):
     scoreMax = 0
     gagnant = ''
@@ -97,3 +101,37 @@ def gagnant(scores):
         elif scores[i] == 21:
             return i
     return gagnant
+
+def continuer():
+    c = ''
+    while c != 'oui' or c != 'non':
+        c = input('Continuer ? (oui / non) : ')
+    if c == 'non':
+        return False
+    else:
+        return True
+
+def tourJoueur(j,nbtour,scores,pioche):
+    print(nbtour)
+    print(j)
+    print('score partie: ', scores[j])
+    replay = continuer()
+    if replay:
+        carte = piocheCarte(pioche)
+        val = valeurCartes(carte)
+        scores[j] += val
+        if scores[j] == 21:
+            victoire(j)
+            return
+        elif scores[j] > 21:
+            del scores[j]
+            
+    if not replay:
+        del scores[j]
+        return
+
+def tourComplet(joueurs,nbtour,scores,pioche):
+    for i in joueurs:
+        tourJoueur(i,nbtour,scores,pioche)
+
+def partieFinie():
