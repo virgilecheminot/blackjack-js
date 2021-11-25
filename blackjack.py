@@ -89,8 +89,8 @@ def premierTour(joueurs):
     scores = initScores(joueurs)
     for i in joueurs:
         cartes2 = piocheCarte(initPioche(len(joueurs)), 2)
-        for e in cartes2:
-            scores[i] += valeurCartes(e)
+        for j in cartes2:
+            scores[i] += valeurCartes(j)
     return scores
 
 def gagnant(scores):
@@ -106,20 +106,21 @@ def gagnant(scores):
 
 def continuer():
     c = ''
-    while c != 'oui' or c != 'non':
-        c = input('Continuer ? (oui / non) : ')
-    if c == 'non':
-        return False
-    else:
+    while c != 'oui' and c != 'non':
+        c = str(input('Continuer ? (oui / non) : '))
+    if c == 'oui':
         return True
+    else:
+        return False
 
 def tourJoueur(j,nbtour,scores,joueurs,pioche):
     print(nbtour)
     print(j)
     print('score partie: ', scores[j])
     replay = continuer()
+    print(replay)
     if replay:
-        carte = piocheCarte(pioche)
+        carte = piocheCarte(pioche)[0]
         val = valeurCartes(carte)
         scores[j] += val
         if scores[j] == 21:
@@ -135,7 +136,8 @@ def tourJoueur(j,nbtour,scores,joueurs,pioche):
 
 def tourComplet(joueurs,nbtour,scores,pioche):
     for i in joueurs:
-        tourJoueur(i,nbtour,scores,pioche)
+        tourJoueur(i,nbtour,scores,joueurs,pioche)
+        nbtour += 1
 
 def partieFinie(joueurs):
     if len(joueurs) == 0:
