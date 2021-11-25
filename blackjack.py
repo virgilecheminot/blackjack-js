@@ -17,7 +17,7 @@ def paquet():
         'valet de trefle', 'valet de carreau', 'valet de coeur', 'valet de pic', 
         'dame de trefle', 'dame de carreau', 'dame de coeur', 'dame de pic', 
         'roi de trefle', 'roi de carreau', 'roi de coeur', 'roi de pic'
-    ]
+    ] #fantastique
 
 ValCartes = {
     'as' : [1, 11],
