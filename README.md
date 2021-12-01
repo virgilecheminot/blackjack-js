@@ -62,3 +62,8 @@ Les joueurs commencent la partie avec 2 cartes. A son tour chaque joueur peut ch
   - Si pas de gagnant : comparaison des scores
     - Si égalité : ajouter une victoire pour tout le monde
   - Mise des perdants dans le portefeuille du joueur
+  - Afficher le vainqueur
+
+- **Fin de partie :**
+  - Afficher les victoires
+  - Afficher les OtterCoins restants dans chaque portefeuille
