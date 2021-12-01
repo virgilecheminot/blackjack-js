@@ -36,11 +36,13 @@ ValCartes = {
 }
 
 def valeurAs():
-    val = int(input("Quelle valeur pour l'as ? (1 ou 11)"))
-    if val == 1:
-        return 0
-    elif val == 11:
-        return 1
+    val = 0
+    while val!= 1 or val != 11 : 
+        val = int(input("Quelle valeur pour l'as ? (1 ou 11)"))
+        if val == 1:
+            return 0
+        elif val == 11:
+            return 1
 
 def initPioche(n):
     pioche = []
