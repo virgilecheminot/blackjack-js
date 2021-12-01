@@ -34,9 +34,9 @@ Les joueurs commencent la partie avec 2 cartes. A son tour chaque joueur peut ch
 - **Partie complète :** (tant que rejouer vrai)
   - Scores initialisés à 0 avec la liste de base 
   - Création de pioche avec nb joueurs × paquet
-  - Création de la main initiale des joueurs (2 cartes) & main du croupier
-  - Ajout de la main aux scores
   - **Premier tour :** (× nb de joueurs)
+    - Création de la main initiale des joueurs (2 cartes) & main du croupier
+    - Ajout de la main aux scores
     - Affiche nom du joueur
     - Affiche main du joueur
     - Demande la mise au joueur (si portefeuille non vide)
