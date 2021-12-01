@@ -21,3 +21,28 @@ Le but d’une partie de Blackjack est de s’approcher le plus possible de 21 p
 - Les figures (valet, dame, roi) valent chacune 10 points
 
 Les joueurs commencent la partie avec 2 cartes. A son tour chaque joueur peut choisir de s’arrêter avec son totalactuel, ou de piocher une nouvelle carte (face cachée) pour l’ajouter à son total. Si le nouveau total dépasse alors 21 points, il perd immédiatement. Si le total égale 21 points exactement, il gagne immédiatement. Dans les autres cas, ilreste en jeu et pourra à son prochain tour à nouveau choisir de continuer ou s’arrêter. Quand plus aucun joueur n’est en jeu (tous ont arrêté ou perdu) alors le gagnant est le joueur le plus proche de 21. Remarque : une version plus comptète des règles du Blackjack se trouve ici : https://www.guide-blackjack.com/Regles-du-black-jack.html
+
+## Déroulement d'une partie
+- Initialisation :
+  - Demande du nombre de joueurs
+  - Création de la liste des joueurs
+  - Initialisation du dictionaire des victoires
+  - Création du portefeuille de chaque joueur à 100 OtterCoins
+
+
+- Partie complète : (tant que rejouer vrai)
+  - Scores initialisés à 0 avec la liste de base 
+  - Création de pioche avec nb joueurs × paquet
+  - Création de la main initiale des joueurs (2 cartes)
+  - Ajout de la main aux scores
+  - Premier tour : (× nb de joueurs)
+    - Affiche nom du joueur
+    - Affiche main du joueur
+    - Demande la mise au joueur
+  - Tour global : (tant que liste joueurs ≠ Ø et pas de victoire)
+    - Tour joueur : (× nb de joueurs encore en jeu)
+      - Affiche nom du joueur
+      - Affiche main du joueur
+      - Propose de continuer
+        - si non : retier joueur de la liste
+      - Pioche une carte et lit sa valeur
