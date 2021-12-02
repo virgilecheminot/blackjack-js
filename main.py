@@ -15,4 +15,4 @@ while rejouer:
         rejouer = True
     else :
         rejouer = False
-print("Vous avez terminé, le programme va maintenant se fermer.")
+print("Vous avez terminé, le jeu va maintenant se fermer.")
