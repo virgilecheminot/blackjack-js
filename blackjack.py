@@ -38,14 +38,11 @@ ValCartes = {
 }
 
 
-def valeurAs():
-    val = 0
-    while val != 1 or val != 11:
-        val = int(input("Quelle valeur pour l'as ? (1 ou 11)"))
-        if val == 1:
-            return 0
-        elif val == 11:
-            return 1
+def valeurAs(scores, joueur):
+    if scores[joueur]+11 <= 21:
+        return 1
+    else:
+        return 0
 
 
 def initPioche(n):
@@ -57,10 +54,10 @@ def initPioche(n):
     return pioche
 
 
-def valeurCartes(carte):
+def valeurCartes(carte, scores, joueur):
     carte_WO_couleur = carte.split()[0]
     if carte_WO_couleur == 'as':
-        return ValCartes['as'][valeurAs()]
+        return ValCartes['as'][valeurAs(scores, joueur)]
     else:
         return ValCartes[carte_WO_couleur]
 
@@ -83,39 +80,40 @@ def initJoueurs(n):
 
 def initScores(joueurs, v=0):
     scores = {}
-    for i in range(len(joueurs)):
-        scores[joueurs[i]] = v
+    for i in joueurs:
+        scores[i] = v
     return scores
 
 
-def initVictoires(joueurs):
-    victoires = {}
+def premierTour(joueurs, scores, pioche,portefeuille,mises):
     for i in joueurs:
-        victoires[i] = 0
-    return victoires
-
-
-def premierTour(joueurs,scores,pioche):
-    for i in joueurs:
-        # print("Joueur :", i)
+        print("Joueur :", i)
         cartes2 = piocheCarte(pioche, 2)
-        # print("Main du joueur : ",end='')
+        print("Main du joueur : ",cartes2)
         for j in cartes2:
-            # print(j,end=' ')
-            scores[i] += valeurCartes(j)
-        # print("Score actuel :", scores[i])
-    return scores
-
+            scores[i] += valeurCartes(j, scores, i)
+        print("Score actuel :", scores[i])
+        if portefeuille[i] <= 0:
+            print("Vous n'avez plus d'OtterCoins, vous ne pouvez plus jouer")
+            joueurs.remove(i)
+            del scores[i]
+        else:
+            print(f"Combien voulez-vous miser ? ({portefeuille[i]} OtterCoins restants) : ",end='')
+            mise = 101
+            while mise > portefeuille[i]:
+                mise = int(input())
+            portefeuille[i] -= mise
+            mises[i] += mise
 
 def gagnant(scores):
     scoreMax = 0
     gagnant = ''
     for i in scores:
+        if scores[i] == 21:
+            return i
         if 21 > scores[i] > scoreMax:
             gagnant = i
             scoreMax = scores[i]
-        elif scores[i] == 21:
-            return i
     return gagnant
 
 
@@ -136,18 +134,18 @@ def tourJoueur(j, nbtour, scores, joueurs, pioche):
     replay = continuer()
     if replay:
         carte = piocheCarte(pioche)[0]
-        val = valeurCartes(carte)
+        val = valeurCartes(carte, scores, j)
         print("Vous avez pioché : ", carte, "(valeur : "+str(val)+")")
         scores[j] += val
         print("Votre score est donc de :", scores[j])
         if scores[j] == 21:
-            joueurs = []
+            joueurs.clear()
             return
         elif scores[j] > 21:
             print("Vous avez dépassé 21 ! Perdu !")
             joueurs.remove(j)
+            del scores[j]
             return
-
     elif not replay:
         joueurs.remove(j)
         return
@@ -156,6 +154,8 @@ def tourJoueur(j, nbtour, scores, joueurs, pioche):
 def tourComplet(joueurs, nbtour, scores, pioche):
     for i in joueurs:
         tourJoueur(i, nbtour, scores, joueurs, pioche)
+        if partieFinie(joueurs):
+            break
 
 
 def partieFinie(joueurs):
@@ -165,12 +165,25 @@ def partieFinie(joueurs):
         return False
 
 
-def partieComplete(joueurs, nbtour, scores, pioche, victoires):
+def partieComplete(joueurs, nbtour, scores, pioche, victoires, portefeuille, mises):
     while not partieFinie(joueurs):
         tourComplet(joueurs, nbtour, scores, pioche)
         nbtour += 1
     if partieFinie(joueurs):
         print("Partie terminée")
         victorieux = gagnant(scores)
+        for i in mises:
+            portefeuille[victorieux] += mises[i]
         print("Gagnant :", victorieux)
         victoires[victorieux] += 1
+
+def voulezVousPartir(joueurs, portefeuille):
+    usrToDel = []
+    for j in joueurs:
+        strAff = j+", voulez vous partir ? (o/n) "
+        rep = input(strAff)
+        if rep == 'o':
+            usrToDel.append(j)
+    for i in usrToDel:
+        joueurs.remove(i)
+        del portefeuille[i]
