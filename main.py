@@ -1,15 +1,29 @@
 from blackjack import *
 
+
+## INITIALISATION
+
 nbjoueurs = int(input('Nombre de joueurs : '))
 joueurs = initJoueurs(nbjoueurs)
-scores = initScores(joueurs)
+# AJOUTER CHOIX DU TYPE DE JOUEUR
+# AJOUTER CHOIX DE STRATÉGIES DE JEU
 victoires = initVictoires(joueurs)
-pioche = initPioche(nbjoueurs)
+# AJOUTER CREATION DU PORTEFEUILLE
+
+
+## PARTIE COMPLETE
 
 rejouer = True
 while rejouer:
     nbtour = 0
-    joueursEnCours = joueurs
+    scores = initScores(joueurs)
+    joueursEnCours = joueurs.copy()
+    pioche = initPioche(len(joueurs))
+
+    ## PREMIER TOUR
+
+    premierTour(joueursEnCours,scores,pioche)
+    # PREMIER TOUR ORDINATEUR
     partieComplete(joueursEnCours,nbtour,scores,pioche,victoires)
     if input("Voulez vous lancer une nouvelle partie ? (o/n)") == 'o':
         rejouer = True
