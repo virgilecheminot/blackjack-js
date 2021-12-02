@@ -1,2 +1,3 @@
+.gitignore
 *.pdf
 /__pycache__/
