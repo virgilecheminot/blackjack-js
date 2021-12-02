@@ -130,7 +130,7 @@ def tourJoueur(j,nbtour,scores,joueurs,pioche):
             return
         elif scores[j] > 21:
             joueurs.remove(j)
-            return
+            return 
             
     if not replay:
         joueurs.remove(j)
