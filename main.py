@@ -1,17 +1,17 @@
 from blackjack import *
 
 
-## INITIALISATION
+# INITIALISATION
 
 nbjoueurs = int(input('Nombre de joueurs : '))
 joueurs = initJoueurs(nbjoueurs)
 # AJOUTER CHOIX DU TYPE DE JOUEUR
 # AJOUTER CHOIX DE STRATÉGIES DE JEU
 victoires = initScores(joueurs)
-portefeuille = initScores(joueurs,100)
+portefeuille = initScores(joueurs, 100)
 
 
-## PARTIE COMPLETE
+# PARTIE COMPLETE
 
 rejouer = True
 while rejouer:
@@ -21,14 +21,16 @@ while rejouer:
     pioche = initPioche(len(joueurs))
     mises = initScores(joueurs)
 
-    ## PREMIER TOUR
+    # PREMIER TOUR
 
-    premierTour(joueursEnCours,scores,pioche,portefeuille,mises)
+    premierTour(joueursEnCours, scores, pioche, portefeuille, mises)
     # PREMIER TOUR ORDINATEUR
-    partieComplete(joueursEnCours,nbtour,scores,pioche,victoires, portefeuille,mises)
+    partieComplete(joueursEnCours, nbtour, scores,
+                   pioche, victoires, portefeuille, mises)
     if input("Voulez vous lancer une nouvelle partie ? (o/n)") == 'o':
         rejouer = True
-    else :
+    else:
         rejouer = False
-    if rejouer : voulezVousPartir(joueurs,portefeuille)
+    if rejouer:
+        voulezVousPartir(joueurs, portefeuille)
 print("Vous avez terminé, le jeu va maintenant se fermer.")

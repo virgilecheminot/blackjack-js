@@ -1,6 +1,7 @@
 ## PAQUET DE CARTES ##
 
 from random import *
+from numpy import random as nprd
 
 
 def paquet():
@@ -18,11 +19,10 @@ def paquet():
         'valet de trefle', 'valet de carreau', 'valet de coeur', 'valet de pic',
         'dame de trefle', 'dame de carreau', 'dame de coeur', 'dame de pic',
         'roi de trefle', 'roi de carreau', 'roi de coeur', 'roi de pic'
-    ]  # fantastique
+    ]
 
 
 ValCartes = {
-    'as': [1, 11],
     '2': 2,
     '3': 3,
     '4': 4,
@@ -40,24 +40,24 @@ ValCartes = {
 
 def valeurAs(scores, joueur):
     if scores[joueur]+11 <= 21:
-        return 1
+        return 11
     else:
-        return 0
+        return 1
 
 
 def initPioche(n):
     pioche = []
     cartes = paquet()
     for i in range(n):
-        shuffle(cartes)
         pioche.extend(cartes)
+    shuffle(pioche)
     return pioche
 
 
 def valeurCartes(carte, scores, joueur):
     carte_WO_couleur = carte.split()[0]
     if carte_WO_couleur == 'as':
-        return ValCartes['as'][valeurAs(scores, joueur)]
+        return valeurAs(scores, joueur)
     else:
         return ValCartes[carte_WO_couleur]
 
@@ -75,6 +75,7 @@ def initJoueurs(n):
     nomsJoueurs = []
     for i in range(n):
         nomsJoueurs.append(input(f'Nom du joueur {i+1} : '))
+    nomsJoueurs.append('croupier')
     return nomsJoueurs
 
 
@@ -85,25 +86,39 @@ def initScores(joueurs, v=0):
     return scores
 
 
-def premierTour(joueurs, scores, pioche,portefeuille,mises):
+def premierTour(joueurs, scores, pioche, portefeuille, mises):
+    print("\n\nPremier tour:")
     for i in joueurs:
-        print("Joueur :", i)
-        cartes2 = piocheCarte(pioche, 2)
-        print("Main du joueur : ",cartes2)
-        for j in cartes2:
-            scores[i] += valeurCartes(j, scores, i)
-        print("Score actuel :", scores[i])
-        if portefeuille[i] <= 0:
-            print("Vous n'avez plus d'OtterCoins, vous ne pouvez plus jouer")
-            joueurs.remove(i)
-            del scores[i]
+        if i != 'croupier':
+            print("\nJoueur :", i)
+            cartes2 = piocheCarte(pioche, 2)
+            print("Main du joueur : ", cartes2)
+            for j in cartes2:
+                scores[i] += valeurCartes(j, scores, i)
+            print("Score actuel :", scores[i])
+            if scores[i] == 21:
+                joueurs.clear()
+            if portefeuille[i] <= 0:
+                print("Vous n'avez plus d'OtterCoins, vous ne pouvez plus jouer")
+                joueurs.remove(i)
+                del scores[i]
+            else:
+                print(
+                    f"Combien voulez-vous miser ? ({portefeuille[i]} OtterCoins restants) : ", end='')
+                mise = 101
+                while mise > portefeuille[i]:
+                    mise = int(input())
+                portefeuille[i] -= mise
+                mises[i] += mise
         else:
-            print(f"Combien voulez-vous miser ? ({portefeuille[i]} OtterCoins restants) : ",end='')
-            mise = 101
-            while mise > portefeuille[i]:
-                mise = int(input())
-            portefeuille[i] -= mise
-            mises[i] += mise
+            cartes2 = piocheCarte(pioche, 2)
+            for j in cartes2:
+                scores[i] += valeurCartes(j, scores, i)
+            print("\nScore du croupier :", scores[i])
+            if scores[i] == 21:
+                joueurs.clear()
+            mises[i] += 10
+
 
 def gagnant(scores):
     scoreMax = 0
@@ -117,38 +132,78 @@ def gagnant(scores):
     return gagnant
 
 
-def continuer():
+def continueHuman():
     c = ''
     while c != 'oui' and c != 'non':
-        c = str(input('Continuer ? (oui / non) : '))
+        c = str(input('Piocher ? (oui / non) : '))
     if c == 'oui':
+        return True
+    else:
+        return False
+
+def continueAlea():
+    return choice([False,True])
+
+def continuePara(p=0.5):
+    return nprd.choice([False,True],p=[1-p,p])
+
+def continueIntel(j,scores):
+    if scores[j] <= 10:
+        p = 1
+    elif scores[j] < 21:
+        p = 1-((scores[j]-11)/10)
+    else:
+        p = 0
+    return continuePara(p)
+
+def continueClassic(j,scores):
+    if scores[j] < 17:
         return True
     else:
         return False
 
 
 def tourJoueur(j, nbtour, scores, joueurs, pioche):
-    print("\nTour numéro :", nbtour+1)
-    print("Joueur :", j)
-    print('score partie: ', scores[j])
-    replay = continuer()
-    if replay:
-        carte = piocheCarte(pioche)[0]
-        val = valeurCartes(carte, scores, j)
-        print("Vous avez pioché : ", carte, "(valeur : "+str(val)+")")
-        scores[j] += val
-        print("Votre score est donc de :", scores[j])
-        if scores[j] == 21:
-            joueurs.clear()
-            return
-        elif scores[j] > 21:
-            print("Vous avez dépassé 21 ! Perdu !")
+    print("\n\nTour numéro :", nbtour+1)
+    if j != 'croupier':
+        print("\nJoueur :", j)
+        print('score partie: ', scores[j])
+        replay = continueHuman()
+        if replay:
+            carte = piocheCarte(pioche)[0]
+            val = valeurCartes(carte, scores, j)
+            print("Vous avez pioché : ", carte, "(valeur : "+str(val)+")")
+            scores[j] += val
+            print("Votre score est donc de :", scores[j])
+            if scores[j] == 21:
+                joueurs.clear()
+                return
+            elif scores[j] > 21:
+                print("Vous avez dépassé 21 ! Perdu !")
+                joueurs.remove(j)
+                del scores[j]
+                return
+        elif not replay:
             joueurs.remove(j)
-            del scores[j]
             return
-    elif not replay:
-        joueurs.remove(j)
-        return
+    else:
+         replay = continueIntel(j,scores)
+         if replay:
+            carte = piocheCarte(pioche)[0]
+            val = valeurCartes(carte, scores, j)
+            scores[j] += val
+            print("\nScore du croupier :",scores[j])
+            if scores[j] == 21:
+                joueurs.clear()
+                return
+            elif scores[j] > 21:
+                joueurs.remove(j)
+                del scores[j]
+                return
+         elif not replay:
+            print("\nLe croupier ne pioche pas")
+            joueurs.remove(j)
+            return
 
 
 def tourComplet(joueurs, nbtour, scores, pioche):
@@ -169,21 +224,23 @@ def partieComplete(joueurs, nbtour, scores, pioche, victoires, portefeuille, mis
     while not partieFinie(joueurs):
         tourComplet(joueurs, nbtour, scores, pioche)
         nbtour += 1
-    if partieFinie(joueurs):
-        print("Partie terminée")
-        victorieux = gagnant(scores)
-        for i in mises:
-            portefeuille[victorieux] += mises[i]
-        print("Gagnant :", victorieux)
-        victoires[victorieux] += 1
+    print("\n\nPartie terminée")
+    victorieux = gagnant(scores)
+    for i in mises:
+        portefeuille[victorieux] += mises[i]
+    print("Gagnant :", victorieux)
+    victoires[victorieux] += 1
+
 
 def voulezVousPartir(joueurs, portefeuille):
+    print()
     usrToDel = []
     for j in joueurs:
-        strAff = j+", voulez vous partir ? (o/n) "
-        rep = input(strAff)
-        if rep == 'o':
-            usrToDel.append(j)
+        if j != 'croupier':
+            strAff = j+", voulez vous partir ? (o/n) "
+            rep = input(strAff)
+            if rep == 'o':
+                usrToDel.append(j)
     for i in usrToDel:
         joueurs.remove(i)
         del portefeuille[i]
