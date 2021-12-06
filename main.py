@@ -3,7 +3,14 @@ from blackjack import *
 
 # INITIALISATION
 
-nbjoueurs = int(input('Nombre de joueurs : '))
+while True:
+    try:
+        nbjoueurs = int(input('Nombre de joueurs : '))
+    except:
+        print("Entrez une valeur correcte")
+        continue
+    else:
+        break
 joueurs = initJoueurs(nbjoueurs)
 # AJOUTER CHOIX DU TYPE DE JOUEUR
 # AJOUTER CHOIX DE STRATÉGIES DE JEU

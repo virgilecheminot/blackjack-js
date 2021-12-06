@@ -1,5 +1,6 @@
 ## PAQUET DE CARTES ##
 
+from math import *
 from random import *
 from numpy import random as nprd
 
@@ -103,11 +104,17 @@ def premierTour(joueurs, scores, pioche, portefeuille, mises):
                 joueurs.remove(i)
                 del scores[i]
             else:
-                print(
-                    f"Combien voulez-vous miser ? ({portefeuille[i]} OtterCoins restants) : ", end='')
-                mise = 101
-                while mise > portefeuille[i]:
-                    mise = int(input())
+                print(f"Combien voulez-vous miser ? ({portefeuille[i]} OtterCoins restants) : ", end='')
+                while True:
+                    try:
+                        mise = int(input())
+                    except:
+                        print("Entrez une valeur correcte")
+                        continue
+                    if mise > portefeuille[i]:
+                        print("Vous devez miser une valeur ≤ à votre portefeuille")
+                    else:
+                        break
                 portefeuille[i] -= mise
                 mises[i] += mise
         else:
@@ -117,7 +124,19 @@ def premierTour(joueurs, scores, pioche, portefeuille, mises):
             print("\nScore du croupier :", scores[i])
             if scores[i] == 21:
                 joueurs.clear()
-            mises[i] += 10
+            mise = floor(choixMise(i,scores)*portefeuille[i])
+            mises[i] += mise
+            portefeuille[i] -= mise
+            print("Le croupier mise",mises[i],"OtterCoins")
+
+def choixMise(j, scores):
+    if scores[j] <= 10:
+        p = scores[j]/10
+    elif scores[j] < 21:
+        p = 1-((scores[j]-11)/10)
+    elif scores[j] == 21:
+        p = 1
+    return p
 
 
 def gagnant(scores):
@@ -197,6 +216,7 @@ def tourJoueur(j, nbtour, scores, joueurs, pioche):
                 joueurs.clear()
                 return
             elif scores[j] > 21:
+                print("Le croupier a dépassé !")
                 joueurs.remove(j)
                 del scores[j]
                 return
@@ -238,7 +258,9 @@ def voulezVousPartir(joueurs, portefeuille):
     for j in joueurs:
         if j != 'croupier':
             strAff = j+", voulez vous partir ? (o/n) "
-            rep = input(strAff)
+            rep = ''
+            while rep != 'o' and rep != 'n':
+                rep = input(strAff)
             if rep == 'o':
                 usrToDel.append(j)
     for i in usrToDel:
