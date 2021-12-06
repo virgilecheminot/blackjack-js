@@ -3,6 +3,33 @@ from blackjack import *
 
 # INITIALISATION
 
+GDict = {
+    'nbtour':0,
+    'pioche':[],
+    'partieFinie':False
+}
+
+JDict = {
+    'joueurs':{
+        0:{
+            'nom':'',
+            'type':0,
+            'score':0,
+            'wallet':100,
+            'mise':0,
+            'ingame':True
+        },
+    },
+    'croupier':{
+        'score':0,
+        'wallet':100,
+        'mise':0,
+        'ingame':True
+    },
+    'victoires':{}
+}
+
+
 while True:
     try:
         nbjoueurs = int(input('Nombre de joueurs : '))
@@ -11,33 +38,31 @@ while True:
         continue
     else:
         break
-joueurs = initJoueurs(nbjoueurs)
-# AJOUTER CHOIX DU TYPE DE JOUEUR
+
+initJoueurs(JDict, nbjoueurs)
 # AJOUTER CHOIX DE STRATÉGIES DE JEU
-victoires = initScores(joueurs)
-portefeuille = initScores(joueurs, 100)
+initVictoires(JDict)
+initScores(JDict, 'wallet', 100)
 
 
 # PARTIE COMPLETE
 
 rejouer = True
 while rejouer:
-    nbtour = 0
-    scores = initScores(joueurs)
-    joueursEnCours = joueurs.copy()
-    pioche = initPioche(len(joueurs))
-    mises = initScores(joueurs)
+    GDict['nbtour'] = 0
+    initScores(JDict, 'score')
+    GDict['pioche'] = initPioche(nbjoueurs+1)
+    initScores(JDict, 'mise')
 
     # PREMIER TOUR
 
-    premierTour(joueursEnCours, scores, pioche, portefeuille, mises)
+    premierTour(GDict,JDict)
     # PREMIER TOUR ORDINATEUR
-    partieComplete(joueursEnCours, nbtour, scores,
-                   pioche, victoires, portefeuille, mises)
+    partieComplete(GDict,JDict)
     if input("Voulez vous lancer une nouvelle partie ? (o/n)") == 'o':
         rejouer = True
     else:
         rejouer = False
     if rejouer:
-        voulezVousPartir(joueurs, portefeuille)
+        voulezVousPartir(JDict)
 print("Vous avez terminé, le jeu va maintenant se fermer.")

@@ -39,8 +39,8 @@ ValCartes = {
 }
 
 
-def valeurAs(scores, joueur):
-    if scores[joueur]+11 <= 21:
+def valeurAs(score):
+    if score+11 <= 21:
         return 11
     else:
         return 1
@@ -55,10 +55,10 @@ def initPioche(n):
     return pioche
 
 
-def valeurCartes(carte, scores, joueur):
+def valeurCartes(carte, score):
     carte_WO_couleur = carte.split()[0]
     if carte_WO_couleur == 'as':
-        return valeurAs(scores, joueur)
+        return valeurAs(score)
     else:
         return ValCartes[carte_WO_couleur]
 
@@ -72,69 +72,105 @@ def piocheCarte(p, x=1):
 # JOUEURS ET SCORES
 
 
-def initJoueurs(n):
-    nomsJoueurs = []
+def initJoueurs(JDict,n):
     for i in range(n):
-        nomsJoueurs.append(input(f'Nom du joueur {i+1} : '))
-    nomsJoueurs.append('croupier')
-    return nomsJoueurs
+        JDict['joueurs'][i] = {}
+        JDict['joueurs'][i]['nom'] = input('Nom du joueur '+str(i+1)+' : ')
+        while True:
+            try:
+                typ = int(input('Humain (0) ou ordinateur (1) : '))
+            except:
+                print("Entrez une valeur correcte")
+                continue
+            if typ != 0 and typ != 1:
+                continue
+            else:
+                break
+        JDict['joueurs'][i]['type'] = typ
+        JDict['joueurs'][i]['ingame'] = True
 
 
-def initScores(joueurs, v=0):
-    scores = {}
-    for i in joueurs:
-        scores[i] = v
-    return scores
+def initScores(JDict, valeur, v=0):
+    for i in JDict['joueurs']:
+        JDict['joueurs'][i][valeur] = v
+    JDict['croupier'][valeur] = v
+
+def initVictoires(JDict):
+    for i in JDict['joueurs']:
+        JDict['victoires'][JDict['joueurs'][i]['nom']] = 0
 
 
-def premierTour(joueurs, scores, pioche, portefeuille, mises):
+
+def premierTour(GDict,JDict):
     print("\n\nPremier tour:")
-    for i in joueurs:
-        if i != 'croupier':
-            print("\nJoueur :", i)
-            cartes2 = piocheCarte(pioche, 2)
+    for i in JDict['joueurs']:
+
+        if JDict['joueurs'][i]['ingame'] and not JDict['joueurs'][i]['type']:
+
+            print("\nJoueur :", JDict['joueurs'][i]['nom'])
+            cartes2 = piocheCarte(GDict['pioche'], 2)
             print("Main du joueur : ", cartes2)
             for j in cartes2:
-                scores[i] += valeurCartes(j, scores, i)
-            print("Score actuel :", scores[i])
-            if scores[i] == 21:
-                joueurs.clear()
-            if portefeuille[i] <= 0:
+                JDict['joueurs'][i]['score'] += valeurCartes(j,JDict['joueurs'][i]['score'])
+            print("Score actuel :", JDict['joueurs'][i]['score'])
+            if JDict['joueurs'][i]['score'] == 21:
+                GDict['partieFinie'] = True
+            if JDict['joueurs'][i]['wallet'] <= 0:
                 print("Vous n'avez plus d'OtterCoins, vous ne pouvez plus jouer")
-                joueurs.remove(i)
-                del scores[i]
+                del JDict['joueurs'][i]
             else:
-                print(f"Combien voulez-vous miser ? ({portefeuille[i]} OtterCoins restants) : ", end='')
+                print(f"Combien voulez-vous miser ? ({JDict['joueurs'][i]['wallet']} OtterCoins restants) : ", end='')
                 while True:
                     try:
                         mise = int(input())
                     except:
                         print("Entrez une valeur correcte")
                         continue
-                    if mise > portefeuille[i]:
+                    if mise > JDict['joueurs'][i]['wallet']:
                         print("Vous devez miser une valeur ≤ à votre portefeuille")
                     else:
                         break
-                portefeuille[i] -= mise
-                mises[i] += mise
-        else:
-            cartes2 = piocheCarte(pioche, 2)
-            for j in cartes2:
-                scores[i] += valeurCartes(j, scores, i)
-            print("\nScore du croupier :", scores[i])
-            if scores[i] == 21:
-                joueurs.clear()
-            mise = floor(choixMise(i,scores)*portefeuille[i])
-            mises[i] += mise
-            portefeuille[i] -= mise
-            print("Le croupier mise",mises[i],"OtterCoins")
+                JDict['joueurs'][i]['wallet'] -= mise
+                JDict['joueurs'][i]['mise'] += mise
 
-def choixMise(j, scores):
-    if scores[j] <= 10:
-        p = scores[j]/10
-    elif scores[j] < 21:
-        p = 1-((scores[j]-11)/10)
-    elif scores[j] == 21:
+
+        elif JDict['joueurs'][i]['ingame'] and JDict['joueurs'][i]['type']:
+
+            print("\nJoueur :", JDict['joueurs'][i]['nom'])
+            cartes2 = piocheCarte(GDict['pioche'], 2)
+            print("Main du joueur : ", cartes2)
+            for j in cartes2:
+                JDict['joueurs'][i]['score'] += valeurCartes(j,JDict['joueurs'][i]['score'])
+            print("Score actuel :", JDict['joueurs'][i]['score'])
+            if JDict['joueurs'][i]['score'] == 21:
+                GDict['partieFinie'] = True
+            if JDict['joueurs'][i]['wallet'] <= 0:
+                del JDict['joueurs'][i]
+            else:
+                mise = floor(choixMise(JDict['joueurs'][i]['score'])*JDict['joueurs'][i]['wallet'])
+                JDict['joueurs'][i]['wallet'] -= mise
+                JDict['joueurs'][i]['mise'] += mise
+                print(JDict['joueurs'][i]['nom'], "mise", mise, "OtterCoins")
+    if JDict['croupier']['ingame']:
+        cartes2 = piocheCarte(GDict['pioche'], 2)
+        for j in cartes2:
+            JDict['croupier']['score'] += valeurCartes(j,JDict['croupier']['score'])
+        print("\nScore du croupier :", JDict['croupier']['score'])
+        if JDict['croupier']['score'] == 21:
+            GDict['partieFinie'] = True
+        mise = floor(choixMise(JDict['croupier']['score'])*JDict['croupier']['wallet'])
+        JDict['croupier']['wallet'] -= mise
+        JDict['croupier']['mise'] += mise
+        print("Le croupier mise", JDict['croupier']['mise'],"OtterCoins")
+
+
+
+def choixMise(score):
+    if score <= 10:
+        p = score/10
+    elif score < 21:
+        p = 1-((score-11)/10)
+    elif score == 21:
         p = 1
     return p
 
@@ -182,54 +218,54 @@ def continueClassic(j,scores):
         return False
 
 
-def tourJoueur(j, nbtour, scores, joueurs, pioche):
-    print("\n\nTour numéro :", nbtour+1)
+def tourJoueur(j, GDict, JDict):
+    print("\n\nTour numéro :", GDict['nbtour']+1)
     if j != 'croupier':
         print("\nJoueur :", j)
-        print('score partie: ', scores[j])
+        print('score partie: ', JDict['scores'][j])
         replay = continueHuman()
         if replay:
-            carte = piocheCarte(pioche)[0]
-            val = valeurCartes(carte, scores, j)
+            carte = piocheCarte(GDict['pioche'])[0]
+            val = valeurCartes(carte, JDict['scores'], j)
             print("Vous avez pioché : ", carte, "(valeur : "+str(val)+")")
-            scores[j] += val
-            print("Votre score est donc de :", scores[j])
-            if scores[j] == 21:
-                joueurs.clear()
+            JDict['scores'][j] += val
+            print("Votre score est donc de :", JDict['scores'][j])
+            if JDict['scores'][j] == 21:
+                JDict['ingame'].clear()
                 return
-            elif scores[j] > 21:
+            elif JDict['scores'][j] > 21:
                 print("Vous avez dépassé 21 ! Perdu !")
-                joueurs.remove(j)
-                del scores[j]
+                JDict['ingame'].remove(j)
+                del JDict['scores'][j]
                 return
         elif not replay:
-            joueurs.remove(j)
+            JDict['ingame'].remove(j)
             return
     else:
-         replay = continueIntel(j,scores)
+         replay = continueIntel(j,JDict['scores'])
          if replay:
-            carte = piocheCarte(pioche)[0]
-            val = valeurCartes(carte, scores, j)
-            scores[j] += val
-            print("\nScore du croupier :",scores[j])
-            if scores[j] == 21:
-                joueurs.clear()
+            carte = piocheCarte(GDict['pioche'])[0]
+            val = valeurCartes(carte, JDict['scores'], j)
+            JDict['scores'][j] += val
+            print("\nScore du croupier :",JDict['scores'][j])
+            if JDict['scores'][j] == 21:
+                JDict['ingame'].clear()
                 return
-            elif scores[j] > 21:
+            elif JDict['scores'][j] > 21:
                 print("Le croupier a dépassé !")
-                joueurs.remove(j)
-                del scores[j]
+                JDict['ingame'].remove(j)
+                del JDict['scores'][j]
                 return
          elif not replay:
             print("\nLe croupier ne pioche pas")
-            joueurs.remove(j)
+            JDict['ingame'].remove(j)
             return
 
 
-def tourComplet(joueurs, nbtour, scores, pioche):
-    for i in joueurs:
-        tourJoueur(i, nbtour, scores, joueurs, pioche)
-        if partieFinie(joueurs):
+def tourComplet(GDict,JDict):
+    for i in JDict['ingame']:
+        tourJoueur(i, GDict,JDict)
+        if partieFinie(JDict['ingame']):
             break
 
 
@@ -240,22 +276,22 @@ def partieFinie(joueurs):
         return False
 
 
-def partieComplete(joueurs, nbtour, scores, pioche, victoires, portefeuille, mises):
-    while not partieFinie(joueurs):
-        tourComplet(joueurs, nbtour, scores, pioche)
-        nbtour += 1
+def partieComplete(GDict,JDict):
+    while not partieFinie(JDict['ingame']):
+        tourComplet(GDict,JDict)
+        GDict['nbtour'] += 1
     print("\n\nPartie terminée")
-    victorieux = gagnant(scores)
-    for i in mises:
-        portefeuille[victorieux] += mises[i]
+    victorieux = gagnant(JDict['scores'])
+    for i in JDict['mises']:
+        JDict['wallet'][victorieux] += JDict['mises'][i]
     print("Gagnant :", victorieux)
-    victoires[victorieux] += 1
+    JDict['victoires'][victorieux] += 1
 
 
-def voulezVousPartir(joueurs, portefeuille):
+def voulezVousPartir(JDict):
     print()
     usrToDel = []
-    for j in joueurs:
+    for j in JDict['listeJ']:
         if j != 'croupier':
             strAff = j+", voulez vous partir ? (o/n) "
             rep = ''
@@ -264,5 +300,5 @@ def voulezVousPartir(joueurs, portefeuille):
             if rep == 'o':
                 usrToDel.append(j)
     for i in usrToDel:
-        joueurs.remove(i)
-        del portefeuille[i]
+        JDict['listeJ'].remove(i)
+        del JDict['wallet'][i]
