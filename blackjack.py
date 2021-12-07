@@ -257,7 +257,7 @@ def tourJoueur(j, GDict, JDict):
 
     if JDict['joueurs'][j]['ingame'] and not JDict['joueurs'][j]['type']:
 
-        print("\nJoueur :", j)
+        print("\nJoueur :", JDict['joueurs'][j]['nom'])
         print('Score partie: ', JDict['joueurs'][j]['score'])
         replay = continueHuman()
         if replay:
@@ -279,7 +279,7 @@ def tourJoueur(j, GDict, JDict):
             return
 
     elif JDict['joueurs'][j]['ingame'] and JDict['joueurs'][j]['type']:
-        print("\nJoueur :", j)
+        print("\nJoueur :", JDict['joueurs'][j]['nom'])
         print('Score partie: ', JDict['joueurs'][j]['score'])
         replay = continueIntel(JDict['joueurs'][j]['score'])
         if replay:
@@ -343,7 +343,10 @@ def partieComplete(GDict, JDict):
     print("\n\nPartie terminée")
     victorieux = gagnant(JDict)
 
-    if victorieux[0] == 'croupier':
+    if len(victorieux) == 0:
+        print("Il n'y a pas de gagnant, tout le monde a dépassé")
+
+    elif victorieux[0] == 'croupier':
         for i in JDict['joueurs']:
             JDict['croupier']['wallet'] += JDict['joueurs'][i]['mise']
         JDict['croupier']['wallet'] += JDict['croupier']['mise']
@@ -357,14 +360,20 @@ def partieComplete(GDict, JDict):
         JDict['victoires'][JDict['joueurs'][victorieux[0]]['nom']] += 1
         print("Gagnant :", JDict['joueurs'][victorieux[0]]['nom'], "avec un score de", victorieux[1])
 
+    GDict['partieFinie'] = False
+
 
 def voulezVousPartir(JDict):
     print()
-    for j in JDict['joueurs']:
-        if not JDict['joueurs'][j]['type']:
-            strAff = j+", voulez vous partir ? (o/n) "
-            rep = ''
-            while rep != 'o' and rep != 'n':
-                rep = input(strAff)
-            if rep == 'o':
-                del JDict['joueurs'][j]
+    if len(JDict['joueurs']) <= 0:
+        print("Il n'y a plus de joueurs en jeu, vous ne pouvez rejoueur.")
+        return
+    else:
+        for j in JDict['joueurs']:
+            if not JDict['joueurs'][j]['type']:
+                strAff = j+", voulez vous partir ? (o/n) "
+                rep = ''
+                while rep != 'o' and rep != 'n':
+                    rep = input(strAff)
+                if rep == 'o':
+                    del JDict['joueurs'][j]
