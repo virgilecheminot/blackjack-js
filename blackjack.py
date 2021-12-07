@@ -253,6 +253,7 @@ def premierTour(GDict, JDict):
         print("Le croupier mise", JDict['croupier']['mise'], "OtterCoins")
 
 
+
 def tourJoueur(j, GDict, JDict):
 
     if JDict['joueurs'][j]['ingame'] and not JDict['joueurs'][j]['type']:
@@ -301,6 +302,7 @@ def tourJoueur(j, GDict, JDict):
             return
 
 
+
 def tourComplet(GDict, JDict):
     print("\n\nTour numéro :", GDict['nbtour']+1)
 
@@ -325,7 +327,6 @@ def tourComplet(GDict, JDict):
                 print("Le croupier a dépassé !")
                 JDict['croupier']['ingame'] = False
                 JDict['croupier']['score'] = -1
-                return
         elif not replay:
             print("\nLe croupier ne pioche pas")
             JDict['croupier']['ingame'] = False
@@ -333,6 +334,7 @@ def tourComplet(GDict, JDict):
     partieFinie(GDict, JDict)
     if GDict['partieFinie']:
         return
+
 
 
 def partieComplete(GDict, JDict):
@@ -361,6 +363,7 @@ def partieComplete(GDict, JDict):
         print("Gagnant :", JDict['joueurs'][victorieux[0]]['nom'], "avec un score de", victorieux[1])
 
     GDict['partieFinie'] = False
+
 
 
 def voulezVousPartir(JDict):
