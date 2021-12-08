@@ -4,12 +4,7 @@ from blackjack import *
 # INITIALISATION
 
 GDict = {
-    'nbtour': 0,
     'pioche': [],
-    'partieFinie': False
-}
-
-JDict = {
     'joueurs': {
         0: {
             'nom': '',
@@ -18,16 +13,16 @@ JDict = {
             'wallet': 100,
             'mise': 0,
             'ingame': True,
-            'blackjack':False,
-            'burst':False
+            'blackjack': False,
+            'burst': False
         },
     },
     'croupier': {
         'score': 0,
         'wallet': 0,
         'ingame': True,
-        'blackjack':False,
-        'burst':False
+        'blackjack': False,
+        'burst': False
     },
     'victoires': {}
 }
@@ -42,26 +37,25 @@ while True:
     else:
         break
 
-initJoueurs(JDict, nbjoueurs)
+initJoueurs(GDict, nbjoueurs)
 # AJOUTER CHOIX DE STRATÉGIES DE JEU
-initVictoires(JDict)
-initScores(JDict, 'wallet', 100)
+initVictoires(GDict)
+initScores(GDict, 'wallet', 100)
 
 
 # PARTIE COMPLETE
 
 rejouer = True
 while rejouer:
-    GDict['nbtour'] = 0
-    initScores(JDict, 'score')
+    initScores(GDict, 'score')
     GDict['pioche'] = initPioche(nbjoueurs+1)
-    initScores(JDict, 'mise')
-    initScores(JDict, 'ingame', True)
+    initScores(GDict, 'mise')
+    initScores(GDict, 'ingame', True)
 
     # PREMIER TOUR
 
-    premierTour(GDict, JDict)
-    partieComplete(GDict, JDict)
+    premierTour(GDict)
+    partieComplete(GDict)
 
     while True:
         rep = input("Voulez vous lancer une nouvelle partie ? (o/n)")
@@ -74,7 +68,7 @@ while rejouer:
     else:
         rejouer = False
     if rejouer:
-        voulezVousPartir(JDict)
+        voulezVousPartir(GDict)
 
 
 print("Vous avez terminé, le jeu va maintenant se fermer.")
