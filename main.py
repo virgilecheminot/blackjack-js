@@ -34,6 +34,8 @@ while True:
     except:
         print("Entrez une valeur correcte")
         continue
+    if nbjoueurs <= 0:
+        continue
     else:
         break
 
@@ -51,6 +53,8 @@ while rejouer:
     GDict['pioche'] = initPioche(nbjoueurs+1)
     initScores(GDict, 'mise')
     initScores(GDict, 'ingame', True)
+    initScores(GDict, 'blackjack', False)
+    initScores(GDict, 'burst', False)
 
     # PREMIER TOUR
 
@@ -63,7 +67,7 @@ while rejouer:
             continue
         else:
             break
-        
+
     if rep == 'o':
         rejouer = True
     else:
@@ -72,5 +76,9 @@ while rejouer:
         voulezVousPartir(GDict)
         if len(GDict['joueurs']) == 0:
             rejouer = False
+
+print("Résumé des victoires :")
+for j in GDict['victoires']:
+    print("-",j,":",GDict['victoires'][j])
 
 print("Vous avez terminé, le jeu va maintenant se fermer.")
