@@ -17,14 +17,17 @@ JDict = {
             'score': 0,
             'wallet': 100,
             'mise': 0,
-            'ingame': True
+            'ingame': True,
+            'blackjack':False,
+            'burst':False
         },
     },
     'croupier': {
         'score': 0,
-        'wallet': 100,
-        'mise': 0,
-        'ingame': True
+        'wallet': 0,
+        'ingame': True,
+        'blackjack':False,
+        'burst':False
     },
     'victoires': {}
 }
