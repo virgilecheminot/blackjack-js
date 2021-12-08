@@ -1,4 +1,4 @@
 .gitignore
 *.pdf
 /__pycache__/
-/.vscode
+.vscode
