@@ -113,9 +113,12 @@ def gagnants(JDict):
             continue
         if JDict['joueurs'][j]['blackjack']:
             gagnants.append(j)
-        elif JDict['joueurs'][i]['score'] >= JDict['croupier']['score']:
+        elif JDict['joueurs'][j]['score'] >= JDict['croupier']['score']:
             gagnants.append(j)
     return gagnants
+
+def gain(j, JDict):
+    if JDict['joueurs'][j]['blackjack'] and JDict['croupier']['blackjack']
 
 
 ## CHOIX DE PIOCHER ##
@@ -326,23 +329,11 @@ def partieComplete(JDict):
     victorieux = gagnants(JDict)
 
     if len(victorieux) == 0:
-        print("Il n'y a pas de gagnant, tout le monde a dépassé")
-
-    elif victorieux[0] == 'croupier':
-        for i in JDict['joueurs']:
-            JDict['croupier']['wallet'] += JDict['joueurs'][i]['mise']
-        JDict['croupier']['wallet'] += JDict['croupier']['mise']
-        JDict['victoires']['croupier'] += 1
-        print("Gagnant : croupier avec un score de", victorieux[1])
-    
+        print("Il n'y a pas de gagnant à cette partie")
     else:
-        for i in JDict['joueurs']:
-            JDict['joueurs'][victorieux[0]]['wallet'] += JDict['joueurs'][i]['mise']
-        JDict['joueurs'][victorieux[0]]['wallet'] += JDict['croupier']['mise']
-        JDict['victoires'][JDict['joueurs'][victorieux[0]]['nom']] += 1
-        print("Gagnant :", JDict['joueurs'][victorieux[0]]['nom'], "avec un score de", victorieux[1])
-
-    GDict['partieFinie'] = False
+        print("Liste des joueurs victorieux")
+        for j in victorieux:
+            print(JDict['joueurs'][j]['nom'],": +",gain(j,JDict),"OtterCoins")
 
 
 
