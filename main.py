@@ -42,19 +42,19 @@ while True:
 initJoueurs(GDict, nbjoueurs)
 # AJOUTER CHOIX DE STRATÉGIES DE JEU
 initVictoires(GDict)
-initScores(GDict, 'wallet', 100)
+initData(GDict, 'wallet', 100)
 
 
 # PARTIE COMPLETE
 
 rejouer = True
 while rejouer:
-    initScores(GDict, 'score')
+    initData(GDict, 'score')
     GDict['pioche'] = initPioche(nbjoueurs+1)
-    initScores(GDict, 'mise')
-    initScores(GDict, 'ingame', True)
-    initScores(GDict, 'blackjack', False)
-    initScores(GDict, 'burst', False)
+    initData(GDict, 'mise')
+    initData(GDict, 'ingame', True)
+    initData(GDict, 'blackjack', False)
+    initData(GDict, 'burst', False)
 
     # PREMIER TOUR
 

@@ -71,7 +71,7 @@ def initJoueurs(GDict, n):
         GDict['joueurs'][i]['burst'] = False
 
 
-def initScores(GDict, valeur, v=0):
+def initData(GDict, valeur, v=0):
     for i in GDict['joueurs']:
         GDict['joueurs'][i][valeur] = v
     GDict['croupier'][valeur] = v
