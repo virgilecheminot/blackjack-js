@@ -63,12 +63,14 @@ while rejouer:
             continue
         else:
             break
+        
     if rep == 'o':
         rejouer = True
     else:
         rejouer = False
     if rejouer:
         voulezVousPartir(GDict)
-
+        if len(GDict['joueurs']) == 0:
+            rejouer = False
 
 print("Vous avez terminé, le jeu va maintenant se fermer.")
