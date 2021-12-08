@@ -79,6 +79,6 @@ while rejouer:
 
 print("Résumé des victoires :")
 for j in GDict['victoires']:
-    print("-",j,":",GDict['victoires'][j])
+    print("-", j, ":", GDict['victoires'][j])
 
 print("Vous avez terminé, le jeu va maintenant se fermer.")
