@@ -11,6 +11,7 @@ GDict = {
             'nom': 'nomJoueur',
             'type': 0,
             'strat':'strategie',
+            'stratmise':['miseAlea','miseFaible','miseForte'],
             'score': 0,
             'wallet': 100,
             'mise': 0,

@@ -263,7 +263,21 @@ def selectContinue(j, GDict):
 def miseAlea(j, Gdict):
     return randint(1, floor(Gdict['joueurs'][j]['wallet']))
 
+def miseFaible(j,GDict):
+    mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+    while mise >((1/4)*(GDict['joueurs'][j]['wallet'])):
+        mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+    return mise
 
+def miseForte(j,GDict) :
+    mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+    while mise <((3/4)*(GDict['joueurs'][j]['wallet'])):
+        mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+    return mise
+
+def selectmise(j,GDict) :
+    'blaba'
+    
 ## FONCTIONS DE DÉROULEMENT ##
 
 def premierTour(GDict):
