@@ -276,8 +276,15 @@ def miseForte(j,GDict) :
     return mise
 
 def selectmise(j,GDict) :
-    'blaba'
-    
+    stratmise = GDict['joueurs'][j]['stratmise']
+    if stratmise == 'miseAlea' :
+        miseAlea(j,GDict)
+    elif stratmise == 'miseFaible' :
+        miseFaible(j,GDict)
+    elif stratmise == 'miseForte':
+        miseForte(j,GDict)
+
+
 ## FONCTIONS DE DÉROULEMENT ##
 
 def premierTour(GDict):
@@ -320,7 +327,7 @@ def premierTour(GDict):
             if GDict['joueurs'][i]['wallet'] <= 0:
                 usrToDel.append(i)
             else:
-                mise = miseAlea(i, GDict)
+                mise = selectmise(i, GDict)
                 GDict['joueurs'][i]['wallet'] -= mise
                 GDict['joueurs'][i]['mise'] += mise
                 print(GDict['joueurs'][i]['nom'], "mise", mise, "OtterCoins")

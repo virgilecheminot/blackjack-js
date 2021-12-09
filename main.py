@@ -6,12 +6,13 @@ from blackjack import *
 GDict = {
     'pioche': [],
     'stratlist':['alea', 'risk', 'safe', 'intel', 'croupnormal','croupfacile','croupdifficile'],
+    'stratmiselist' :['miseAlea','miseFaible','miseForte'],
     'joueurs': {
         0: {
             'nom': 'nomJoueur',
             'type': 0,
             'strat':'strategie',
-            'stratmise':['miseAlea','miseFaible','miseForte'],
+            'stratmise':'strategie',
             'score': 0,
             'wallet': 100,
             'mise': 0,
