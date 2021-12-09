@@ -230,12 +230,6 @@ def continueCroupFacil(j, GDict):
         GDict['joueurs'][j]['ingame'] = False
         print(GDict['joueurs'][j]['nom'], "ne pioche pas")
 
-def continueCroupierFacil(GDict) :
-    if GDict['croupier']['score'] < 15 : 
-        GDict['croupier']['ingame'] = True
-    else : 
-        GDict['croupier']['ingame'] = False
-        print("\nLe croupier ne pioche pas")
 
 def continueCroupDifficile(j, GDict):
     if GDict['joueurs'][j]['score'] < 19:
@@ -244,12 +238,6 @@ def continueCroupDifficile(j, GDict):
         GDict['joueurs'][j]['ingame'] = False
         print(GDict['joueurs'][j]['nom'], "ne pioche pas")
 
-def continueCroupierDifficile(GDict) :
-    if GDict['croupier']['score'] < 19 : 
-        GDict['croupier']['ingame'] = True
-    else : 
-        GDict['croupier']['ingame'] = False
-        print("\nLe croupier ne pioche pas")
 
 def selectContinue(j, GDict):
     strat = GDict['joueurs'][j]['strat']
@@ -261,8 +249,12 @@ def selectContinue(j, GDict):
         continuePara(j, GDict, 0.2)
     elif strat == 'intel':
         continueIntel(j, GDict)
-    elif strat == 'croupier':
+    elif strat == 'croupnormal':
         continueCroupNormal(j, GDict)
+    elif strat == 'croupfacile':
+        continueCroupFacil(j,GDict)
+    elif strat == 'croupdifficile' :
+        continueCroupDifficile(j,GDict)
        
 
 
