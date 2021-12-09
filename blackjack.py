@@ -216,7 +216,7 @@ def continueCroupNormal(j, GDict):
         GDict['joueurs'][j]['ingame'] = False
         print(GDict['joueurs'][j]['nom'], "ne pioche pas")
 
-def continueCroupierNormal(GDict):
+def continueCroupier(GDict):
     if GDict['croupier']['score'] < 17:
         GDict['croupier']['ingame'] = True
     else:
@@ -262,7 +262,7 @@ def selectContinue(j, GDict):
     elif strat == 'intel':
         continueIntel(j, GDict)
     elif strat == 'croupier':
-        continueCroupLike(j, GDict)
+        continueCroupNormal(j, GDict)
        
 
 
