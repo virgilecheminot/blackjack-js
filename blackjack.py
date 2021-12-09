@@ -343,16 +343,17 @@ def premierTour(GDict):
                 print("Vous n'avez plus d'OtterCoins, vous ne pouvez plus jouer")
                 usrToDel.append(i)
             else:
-                print(
-                    f"Combien voulez-vous miser ? ({GDict['joueurs'][i]['wallet']} OtterCoins restants) : ", end='')
                 while True:
+                    print(
+                        f"Combien voulez-vous miser ? ({GDict['joueurs'][i]['wallet']} OtterCoins restants) : ", end='')
                     try:
                         mise = int(input())
                     except:
                         print("Entrez une valeur correcte")
                         continue
-                    if mise > GDict['joueurs'][i]['wallet']:
-                        print("Vous devez miser une valeur ≤ à votre portefeuille")
+                    if mise > GDict['joueurs'][i]['wallet'] or mise < 1:
+                        print(
+                            "Vous devez miser une valeur ≤ à votre portefeuille et supérieure à 1")
                     else:
                         break
                 GDict['joueurs'][i]['wallet'] -= mise
