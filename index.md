@@ -240,7 +240,27 @@ def choixMise(score):
         p = 1
     return p
 ```
-
+- `miseAlea(score)` effectue un choix de la mise aléatoirement entre 1 et le portefeuille du joueur :
+```py
+def miseAlea(j, Gdict):
+    return randint(1, floor(Gdict['joueurs'][j]['wallet']))
+```
+- `miseFaible(score)` effectue un choix de la mise dite "Faible", car il effectue son choix afin qu'elle soit inférieur au quart du portefeuille du joueur :
+```py
+def miseFaible(j,GDict):
+    mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+    while mise >((1/4)*(GDict['joueurs'][j]['wallet'])):
+        mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+    return mise
+```
+- `miseAlea(score)` effectue un choix de la mise dite "Forte", car il effectue son choix afin qu'elle soit supérieure au trois quart du portefeuille du joueur :
+```py
+def miseForte(j,GDict) :
+    mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+    while mise <((3/4)*(GDict['joueurs'][j]['wallet'])):
+        mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+    return mise
+```
 ### Tournoi automatique et comparaison des stratégies
 
 (partie à venir)
