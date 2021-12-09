@@ -24,7 +24,6 @@ def paquet():
         'roi de trefle', 'roi de carreau', 'roi de coeur', 'roi de pic'
     ]
 
-
 ValCartes = {
     '2': 2,
     '3': 3,
@@ -210,6 +209,12 @@ def continueIntel(j, GDict):
         p = 0
     continuePara(j, GDict, p)
 
+def continueCroupLike(j, GDict):
+    if GDict['joueurs'][j]['score'] < 17:
+        GDict['joueurs'][j]['ingame'] = True
+    else:
+        GDict['joueurs'][j]['ingame'] = False
+        print(GDict['joueurs'][j]['nom'], "ne pioche pas")
 
 def continueCroupier(GDict):
     if GDict['croupier']['score'] < 17:
@@ -233,12 +238,24 @@ def continueCroupier3(GDict) :
         print("\nLe croupier ne pioche pas")
 
 def continueCroupier4(GDict):
-    if GDict['croupier']['score'] == GDict['croupier']['score'-1] and GDict['croupier']['score']<=17:
+    if GDict['croupier']['score'] == GDict['croupier']['score']-1 and GDict['croupier']['score']<=17:
         GDict['croupier']['ingame'] = True 
-    else : 
+    else :
         GDict['croupier']['ingame'] = False
         print("\nLe croupier ne pioche pas")
 
+def selectContinue(j, GDict):
+    strat = GDict['joueurs'][j]['strat']
+    if strat == 'alea':
+        continueAlea(j, GDict)
+    elif strat == 'risk':
+        continuePara(j, GDict, 0.8)
+    elif strat == 'safe':
+        continuePara(j, GDict, 0.2)
+    elif strat == 'intel':
+        continueIntel(j, GDict)
+    elif strat == 'croupier':
+        continueCroupLike(j, GDict)
        
 
 
@@ -343,7 +360,7 @@ def tourJoueur(j, GDict):
     elif GDict['joueurs'][j]['ingame'] and GDict['joueurs'][j]['type']:
         print("\nJoueur :", GDict['joueurs'][j]['nom'])
         print('Score partie: ', GDict['joueurs'][j]['score'])
-        continueIntel(j, GDict)
+        selectContinue(j, GDict)
         while GDict['joueurs'][j]['ingame']:
             carte = piocheCarte(GDict['pioche'])[0]
             val = valeurCartes(carte, GDict['joueurs'][j]['score'])
@@ -356,7 +373,7 @@ def tourJoueur(j, GDict):
                 GDict['joueurs'][j]['ingame'] = False
                 GDict['joueurs'][j]['burst'] = True
             else:
-                continueIntel(j, GDict)
+                selectContinue(j, GDict)
 
 
 def tourComplet(GDict):

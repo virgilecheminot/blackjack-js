@@ -5,7 +5,7 @@ from blackjack import *
 
 GDict = {
     'pioche': [],
-    'stratlist':['alea', 'para', 'intel', 'croupier'],
+    'stratlist':['alea', 'risk', 'safe', 'intel', 'croupier'],
     'joueurs': {
         0: {
             'nom': 'nomJoueur',
