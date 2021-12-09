@@ -237,13 +237,6 @@ def continueCroupier3(GDict) :
         GDict['croupier']['ingame'] = False
         print("\nLe croupier ne pioche pas")
 
-def continueCroupier4(GDict):
-    if GDict['croupier']['score'] == GDict['croupier']['score']-1 and GDict['croupier']['score']<=17:
-        GDict['croupier']['ingame'] = True 
-    else :
-        GDict['croupier']['ingame'] = False
-        print("\nLe croupier ne pioche pas")
-
 def selectContinue(j, GDict):
     strat = GDict['joueurs'][j]['strat']
     if strat == 'alea':
