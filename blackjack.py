@@ -205,6 +205,29 @@ def continueCroupier(GDict):
         GDict['croupier']['ingame'] = False
         print("\nLe croupier ne pioche pas")
 
+def continueCroupier2(GDict) :
+    if GDict['croupier']['score'] < 15 : 
+        GDict['croupier']['ingame'] = True
+    else : 
+        GDict['croupier']['ingame'] = False
+        print("\nLe croupier ne pioche pas")
+
+def continueCroupier3(GDict) :
+    if GDict['croupier']['score'] < 19 : 
+        GDict['croupier']['ingame'] = True
+    else : 
+        GDict['croupier']['ingame'] = False
+        print("\nLe croupier ne pioche pas")
+
+def continueCroupier4(GDict):
+    if GDict['croupier']['score'] == GDict['croupier']['score'-1] and GDict['croupier']['score']<=17:
+        GDict['croupier']['ingame'] = True 
+    else : 
+        GDict['croupier']['ingame'] = False
+        print("\nLe croupier ne pioche pas")
+
+       
+
 
 ## CHOIX DE MISE ##
 
