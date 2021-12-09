@@ -52,8 +52,23 @@ def initPioche(n):
 
 def initJoueurs(GDict, n):
     for i in range(n):
+        print()
         GDict['joueurs'][i] = {}
-        GDict['joueurs'][i]['nom'] = input('\nNom du joueur '+str(i+1)+' : ')
+        while True:
+            nom = input('Nom du joueur '+str(i+1)+' : ')
+            if nom == '':
+                print("Vous ne pouvez pas choisir un nom vide")
+                continue
+            same = False
+            for j in range(i):
+                if nom == GDict['joueurs'][j]['nom']:
+                    same = True
+            if same:
+                print("Le nom choisi est déjà pris")
+                continue
+            else:
+                GDict['joueurs'][i]['nom'] = nom
+                break
         while True:
             try:
                 typ = int(input('Humain (0) ou ordinateur (1) : '))
