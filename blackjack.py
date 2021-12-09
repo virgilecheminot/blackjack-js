@@ -66,6 +66,19 @@ def initJoueurs(GDict, n):
             else:
                 break
         GDict['joueurs'][i]['type'] = typ
+        if typ:
+            print("Choix de la straégie joueur")
+            print(GDict['stratlist'])
+            for s in GDict['stratlist']:
+                while True:
+                    strat = input(s+" (o/n) : ")
+                    if strat != 'o' and strat != 'n':
+                        continue
+                    else:
+                        break
+                if strat == 'o':
+                    GDict['joueurs'][i]['strat'] = s
+                    break
         GDict['joueurs'][i]['ingame'] = True
         GDict['joueurs'][i]['blackjack'] = False
         GDict['joueurs'][i]['burst'] = False
