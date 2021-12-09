@@ -209,42 +209,42 @@ def continueIntel(j, GDict):
         p = 0
     continuePara(j, GDict, p)
 
-def continueCroupLike(j, GDict):
+def continueCroupNormal(j, GDict):
     if GDict['joueurs'][j]['score'] < 17:
         GDict['joueurs'][j]['ingame'] = True
     else:
         GDict['joueurs'][j]['ingame'] = False
         print(GDict['joueurs'][j]['nom'], "ne pioche pas")
 
-def continueCroupier(GDict):
+def continueCroupierNormal(GDict):
     if GDict['croupier']['score'] < 17:
         GDict['croupier']['ingame'] = True
     else:
         GDict['croupier']['ingame'] = False
         print("\nLe croupier ne pioche pas")
 
-def continueCroupLike2(j, GDict):
+def continueCroupFacil(j, GDict):
     if GDict['joueurs'][j]['score'] < 15:
         GDict['joueurs'][j]['ingame'] = True
     else:
         GDict['joueurs'][j]['ingame'] = False
         print(GDict['joueurs'][j]['nom'], "ne pioche pas")
 
-def continueCroupier2(GDict) :
+def continueCroupierFacil(GDict) :
     if GDict['croupier']['score'] < 15 : 
         GDict['croupier']['ingame'] = True
     else : 
         GDict['croupier']['ingame'] = False
         print("\nLe croupier ne pioche pas")
 
-def continueCroupLike(j, GDict):
+def continueCroupDifficile(j, GDict):
     if GDict['joueurs'][j]['score'] < 19:
         GDict['joueurs'][j]['ingame'] = True
     else:
         GDict['joueurs'][j]['ingame'] = False
         print(GDict['joueurs'][j]['nom'], "ne pioche pas")
 
-def continueCroupier3(GDict) :
+def continueCroupierDifficile(GDict) :
     if GDict['croupier']['score'] < 19 : 
         GDict['croupier']['ingame'] = True
     else : 
