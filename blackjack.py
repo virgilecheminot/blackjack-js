@@ -24,6 +24,7 @@ def paquet():
         'roi de trefle', 'roi de carreau', 'roi de coeur', 'roi de pic'
     ]
 
+
 ValCartes = {
     '2': 2,
     '3': 3,
@@ -52,7 +53,7 @@ def initPioche(n):
 def initJoueurs(GDict, n):
     for i in range(n):
         GDict['joueurs'][i] = {}
-        GDict['joueurs'][i]['nom'] = input('Nom du joueur '+str(i+1)+' : ')
+        GDict['joueurs'][i]['nom'] = input('\nNom du joueur '+str(i+1)+' : ')
         while True:
             try:
                 typ = int(input('Humain (0) ou ordinateur (1) : '))
@@ -66,17 +67,41 @@ def initJoueurs(GDict, n):
                 break
         GDict['joueurs'][i]['type'] = typ
         if typ:
-            print("Choix de la straégie joueur")
+            print("Choix de la straégie joueur :")
             print(GDict['stratlist'])
-            for s in GDict['stratlist']:
-                while True:
-                    strat = input(s+" (o/n) : ")
-                    if strat != 'o' and strat != 'n':
-                        continue
-                    else:
+            while True:
+                for s in GDict['stratlist']:
+                    while True:
+                        strat = input(s+" (o/n) : ")
+                        if strat != 'o' and strat != 'n':
+                            continue
+                        else:
+                            break
+                    if strat == 'o':
+                        GDict['joueurs'][i]['strat'] = s
                         break
-                if strat == 'o':
-                    GDict['joueurs'][i]['strat'] = s
+                if strat != 'o':
+                    print("Vous n'avez pas choisi de stratégie")
+                    continue
+                else:
+                    break
+            print("Choix de la mise :")
+            print(GDict['stratmiselist'])
+            while True:
+                for s in GDict['stratmiselist']:
+                    while True:
+                        strat = input(s+" (o/n) : ")
+                        if strat != 'o' and strat != 'n':
+                            continue
+                        else:
+                            break
+                    if strat == 'o':
+                        GDict['joueurs'][i]['stratmise'] = s
+                        break
+                if strat != 'o':
+                    print("Vous n'avez pas choisi de stratégie")
+                    continue
+                else:
                     break
         GDict['joueurs'][i]['ingame'] = True
         GDict['joueurs'][i]['blackjack'] = False
@@ -209,12 +234,14 @@ def continueIntel(j, GDict):
         p = 0
     continuePara(j, GDict, p)
 
+
 def continueCroupNormal(j, GDict):
     if GDict['joueurs'][j]['score'] < 17:
         GDict['joueurs'][j]['ingame'] = True
     else:
         GDict['joueurs'][j]['ingame'] = False
         print(GDict['joueurs'][j]['nom'], "ne pioche pas")
+
 
 def continueCroupier(GDict):
     if GDict['croupier']['score'] < 17:
@@ -223,8 +250,9 @@ def continueCroupier(GDict):
         GDict['croupier']['ingame'] = False
         print("\nLe croupier ne pioche pas")
 
-def continueCroupFacil(j, GDict):
-    if GDict['joueurs'][j]['score'] < 15:
+
+def continueCroupFacile(j, GDict):
+    if GDict['joueurs'][j]['score'] < 16:
         GDict['joueurs'][j]['ingame'] = True
     else:
         GDict['joueurs'][j]['ingame'] = False
@@ -249,13 +277,12 @@ def selectContinue(j, GDict):
         continuePara(j, GDict, 0.2)
     elif strat == 'intel':
         continueIntel(j, GDict)
-    elif strat == 'croupnormal':
+    elif strat == 'croupNormal':
         continueCroupNormal(j, GDict)
-    elif strat == 'croupfacile':
-        continueCroupFacil(j,GDict)
-    elif strat == 'croupdifficile' :
-        continueCroupDifficile(j,GDict)
-       
+    elif strat == 'croupFacile':
+        continueCroupFacile(j, GDict)
+    elif strat == 'croupDiff':
+        continueCroupDifficile(j, GDict)
 
 
 ## CHOIX DE MISE ##
@@ -263,26 +290,29 @@ def selectContinue(j, GDict):
 def miseAlea(j, Gdict):
     return randint(1, floor(Gdict['joueurs'][j]['wallet']))
 
-def miseFaible(j,GDict):
-    mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
-    while mise >((1/4)*(GDict['joueurs'][j]['wallet'])):
-        mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+
+def miseFaible(j, GDict):
+    mise = randint(1, floor(GDict['joueurs'][j]['wallet']))
+    while mise > ((1/4)*(GDict['joueurs'][j]['wallet'])):
+        mise = randint(1, floor(GDict['joueurs'][j]['wallet']))
     return mise
 
-def miseForte(j,GDict) :
-    mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
-    while mise <((3/4)*(GDict['joueurs'][j]['wallet'])):
-        mise = randint(1 ,floor(GDict['joueurs'][j]['wallet']))
+
+def miseForte(j, GDict):
+    mise = randint(1, floor(GDict['joueurs'][j]['wallet']))
+    while mise < ((3/4)*(GDict['joueurs'][j]['wallet'])):
+        mise = randint(1, floor(GDict['joueurs'][j]['wallet']))
     return mise
 
-def selectmise(j,GDict) :
+
+def selectmise(j, GDict):
     stratmise = GDict['joueurs'][j]['stratmise']
-    if stratmise == 'miseAlea' :
-        miseAlea(j,GDict)
-    elif stratmise == 'miseFaible' :
-        miseFaible(j,GDict)
+    if stratmise == 'miseAlea':
+        return miseAlea(j, GDict)
+    elif stratmise == 'miseFaible':
+        return miseFaible(j, GDict)
     elif stratmise == 'miseForte':
-        miseForte(j,GDict)
+        return miseForte(j, GDict)
 
 
 ## FONCTIONS DE DÉROULEMENT ##
@@ -425,7 +455,7 @@ def partieComplete(GDict):
     for j in GDict['joueurs']:
         gain(j, GDict)
 
-    print("Résumé de la partie :")
+    print("\nRésumé de la partie :")
     usrToDel = []
     for j in GDict['joueurs']:
         if GDict['joueurs'][j]['wallet'] < 1:

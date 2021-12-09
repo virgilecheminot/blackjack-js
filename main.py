@@ -5,14 +5,14 @@ from blackjack import *
 
 GDict = {
     'pioche': [],
-    'stratlist':['alea', 'risk', 'safe', 'intel', 'croupnormal','croupfacile','croupdifficile'],
-    'stratmiselist' :['miseAlea','miseFaible','miseForte'],
+    'stratlist': ['alea', 'risk', 'safe', 'intel', 'croupNormal', 'croupFacile', 'croupDiff'],
+    'stratmiselist': ['miseAlea', 'miseFaible', 'miseForte'],
     'joueurs': {
         0: {
-            'nom': 'nomJoueur',
+            'nom': '',
             'type': 0,
-            'strat':'strategie',
-            'stratmise':'strategie',
+            'strat': '',
+            'stratmise': '',
             'score': 0,
             'wallet': 100,
             'mise': 0,
@@ -81,7 +81,7 @@ while rejouer:
         if len(GDict['joueurs']) == 0:
             rejouer = False
 
-print("Résumé des victoires :")
+print("\nRésumé des victoires :")
 for j in GDict['victoires']:
     print("-", j, ":", GDict['victoires'][j])
 
