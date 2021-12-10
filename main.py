@@ -1,88 +1,33 @@
-from blackjack import *
+import sys
 
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialogButtonBox
+from PyQt5.QtWidgets import QFormLayout
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QVBoxLayout
 
-# INITIALISATION
+class Dialog(QDialog):
+    """Dialog."""
+    def __init__(self, parent=None):
+        """Initializer."""
+        super().__init__(parent)
+        self.setWindowTitle('QDialog')
+        dlgLayout = QVBoxLayout()
+        formLayout = QFormLayout()
+        formLayout.addRow('Name:', QLineEdit())
+        formLayout.addRow('Age:', QLineEdit())
+        formLayout.addRow('Job:', QLineEdit())
+        formLayout.addRow('Hobbies:', QLineEdit())
+        dlgLayout.addLayout(formLayout)
+        btns = QDialogButtonBox()
+        btns.setStandardButtons(
+            QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
+        dlgLayout.addWidget(btns)
+        self.setLayout(dlgLayout)
 
-GDict = {
-    'pioche': [],
-    'stratlist': ['alea', 'risk', 'safe', 'intel', 'croupNormal', 'croupFacile', 'croupDiff'],
-    'stratmiselist': ['miseAlea', 'miseFaible', 'miseForte'],
-    'joueurs': {
-        0: {
-            'nom': '',
-            'type': 0,
-            'strat': '',
-            'stratmise': '',
-            'score': 0,
-            'wallet': 100,
-            'mise': 0,
-            'ingame': True,
-            'blackjack': False,
-            'burst': False
-        },
-    },
-    'croupier': {
-        'score': 0,
-        'wallet': 0,
-        'ingame': True,
-        'blackjack': False,
-        'burst': False
-    },
-    'victoires': {}
-}
-
-
-while True:
-    try:
-        nbjoueurs = int(input('Nombre de joueurs : '))
-    except:
-        print("Entrez une valeur correcte")
-        continue
-    if nbjoueurs <= 0:
-        continue
-    else:
-        break
-
-initJoueurs(GDict, nbjoueurs)
-# AJOUTER CHOIX DE STRATÉGIES DE JEU
-initVictoires(GDict)
-initData(GDict, 'wallet', 100)
-
-
-# PARTIE COMPLETE
-
-rejouer = True
-while rejouer:
-    initData(GDict, 'score')
-    GDict['pioche'] = initPioche(nbjoueurs+1)
-    initData(GDict, 'mise')
-    initData(GDict, 'ingame', True)
-    initData(GDict, 'blackjack', False)
-    initData(GDict, 'burst', False)
-
-    # PREMIER TOUR
-
-    premierTour(GDict)
-    partieComplete(GDict)
-
-    while True:
-        rep = input("Voulez vous lancer une nouvelle partie ? (o/n)")
-        if rep != 'o' and rep != 'n':
-            continue
-        else:
-            break
-
-    if rep == 'o':
-        rejouer = True
-    else:
-        rejouer = False
-    if rejouer:
-        voulezVousPartir(GDict)
-        if len(GDict['joueurs']) == 0:
-            rejouer = False
-
-print("\nRésumé des victoires :")
-for j in GDict['victoires']:
-    print("-", j, ":", GDict['victoires'][j])
-
-print("Vous avez terminé, le jeu va maintenant se fermer.")
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    dlg = Dialog()
+    dlg.show()
+    sys.exit(app.exec_())
