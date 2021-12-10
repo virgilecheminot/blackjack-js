@@ -476,8 +476,8 @@ def partieComplete(GDict):
     for j in GDict['joueurs']:
         if GDict['joueurs'][j]['wallet'] < 1:
             usrToDel.append(j)
-        GDict['victoires'][GDict['joueurs'][j]['nom']] += 1
         if j in victorieux:
+            GDict['victoires'][GDict['joueurs'][j]['nom']] += 1
             print("-", GDict['joueurs'][j]['nom'], ":", GDict['joueurs'][j]
                   ['score'], "gagné →", GDict['joueurs'][j]['wallet'], "OtterCoins")
         else:
