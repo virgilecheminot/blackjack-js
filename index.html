@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Le jeu du Blackjack en JavaScript">
     <link rel="stylesheet" href="style.css">
     <title>Blackjack</title>
 </head>
@@ -97,19 +98,15 @@
 
      <div id="premiertour" class="main-game-window hidden">
          <h2>Premier tour</h2>
-         <div id="player-score-zone">
-             <!-- <div>
-                 <label for="player1score">Joueur 1 :</label>
-                 <p>16</p>
-             </div> -->
-         </div>
+         <div id="player-score-zone"></div>
 
          <div id="croupier-score-zone">
-             <label for="croupierscore">Croupier :</label>
+             <h3>Croupier :</h3>
              <p id="coupier-score-first"></p>
+             <p id="main-croup-first"></p>
          </div>
          <div class="bottom">
-             <button>Suivant</button>
+             <button onclick="openTourJoueur()">Suivant</button>
          </div>
      </div>
 
@@ -141,21 +138,15 @@
          <h2>Résumé de la partie</h2>
          <div id="player1resume">
              <label for="player1score">Score :</label>
-             <a id="player1score">19</a>
+             <p id="player1score">19</p>
              <label for="player1gain">Gain :</label>
-             <a id="player1gain">69 OC</a>
+             <p id="player1gain">69 OC</p>
          </div>
-         <div id="player2resume">
-            <label for="player2score">Score :</label>
-            <a id="player2score">24</a>
-            <label for="player2gain">Gain :</label>
-            <a id="player2gain">-20 OC</a>
-        </div>
         <div id="croupierresume">
-            <label for="croupierscore">Score :</label>
-            <a id="croupierscore">20</a>
+            <label for="croupier-score-final">Score :</label>
+            <p id="croupier-score-final">20</p>
             <label for="croupiergain">Gain :</label>
-            <a id="croupiergain">15 OC</a>
+            <p id="croupiergain">15 OC</p>
         </div>
 
         <div class="bottom">

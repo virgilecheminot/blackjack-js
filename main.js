@@ -57,6 +57,15 @@ function initPioche() {
     for (let i = 0; i < Object.keys(GDict['joueurs']).length; i++) {
         pioche = pioche.concat(paquet());
     }
+    const mélange = array => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    };
+    mélange(pioche);
     return pioche;
 }
 
@@ -101,9 +110,9 @@ function loadMainMenu() {
         document.getElementById('remove-player-button').disabled = false;
         for (const [joueur] of Object.entries(GDict['joueurs'])) {
             if (GDict['joueurs'][joueur]['type'] == '1') {
-                var str = joueur + " (ordinateur)";
+                var str = joueur + " (ordinateur) - " + GDict['joueurs'][joueur]['wallet'] + 'OC';
             } else {
-                var str = joueur;
+                var str = joueur + ' - ' + GDict['joueurs'][joueur]['wallet'] + ' OC';
             }
             const li = document.createElement("li");
             li.appendChild(document.createTextNode(str));
@@ -235,27 +244,31 @@ function loadChoixMises() {
     var listMise = document.getElementById("mises-list");
     listMise.innerHTML = '';
     for (const [joueur] of Object.entries(GDict['joueurs'])) {
-        GDict['joueurs'][joueur]['mise'] = 0;
-        var idstr = joueur + "-input-mises";
-        var div = document.createElement('div');
-        var label = document.createElement('label');
-        var input = document.createElement('input');
-        label.setAttribute("for", idstr);
-        label.innerHTML = joueur + " :";
-        input.setAttribute('type', 'text');
-        input.id = idstr;
-        input.setAttribute('size', '5');
-        input.onchange = function () { stoppedTypingMises(idstr); };
-        input.value = '';
-        div.appendChild(label);
-        div.appendChild(input);
-        listMise.appendChild(div);
-        if (GDict['joueurs'][joueur]['type'] == '1') {
-            var mise = choixMisesOrdi(GDict['joueurs'][joueur]['stratmise'], GDict['joueurs'][joueur]['wallet']);
-            input.value = mise;
-            input.disabled = true;
+        if (GDict['joueurs'][joueur]['wallet'] < 1) {
+            delete GDict['joueurs'][joueur];
+        } else {
+            GDict['joueurs'][joueur]['mise'] = 0;
+            var idstr = joueur + "-input-mises";
+            var div = document.createElement('div');
+            var label = document.createElement('label');
+            var input = document.createElement('input');
+            label.setAttribute("for", idstr);
+            label.innerHTML = joueur + " :";
+            input.setAttribute('type', 'text');
+            input.id = idstr;
+            input.setAttribute('size', '5');
+            input.onchange = function () { stoppedTypingMises(idstr); };
+            input.value = '';
+            div.appendChild(label);
+            div.appendChild(input);
+            listMise.appendChild(div);
+            if (GDict['joueurs'][joueur]['type'] == '1') {
+                var mise = choixMisesOrdi(GDict['joueurs'][joueur]['stratmise'], GDict['joueurs'][joueur]['wallet']);
+                input.value = mise;
+                input.disabled = true;
+            }
+            stoppedTypingMises(idstr);
         }
-        stoppedTypingMises(idstr);
     }
     document.getElementById('choixmises').classList.remove('hidden');
 }
@@ -350,14 +363,23 @@ function loadPremierTour() {
 
         var idstr = joueur + "-score-zone";
         var div = document.createElement('div');
-        var label = document.createElement('label');
+        var h3 = document.createElement('h3');
         var p = document.createElement('p');
-        label.setAttribute("for", idstr);
-        label.innerHTML = joueur + " :";
+        var phand = document.createElement('p');
+        h3.innerHTML = joueur + " :";
         p.id = idstr;
-        // p.innerHTML = premierTour(joueur);
-        div.appendChild(label);
+        p.innerHTML = premierTour(joueur);
+        main = GDict['joueurs'][joueur]['main'];
+        handStr = '';
+        for (let i = 0; i < main.length-1; i++) {
+            const element = main[i];
+            handStr += element + ', ';
+        }
+        handStr += main[main.length-1]
+        phand.innerHTML = handStr;
+        div.appendChild(h3);
         div.appendChild(p);
+        div.appendChild(phand);
         scoreZone.appendChild(div);
     }
     GDict['croupier']['score'] = 0;
@@ -365,7 +387,64 @@ function loadPremierTour() {
     GDict['croupier']['blackjack'] = false;
     GDict['croupier']['burst'] = false;
     GDict['croupier']['main'] = [];
-    // document.getElementById('coupier-score-first').innerHTML = premierTourCroup();
+    document.getElementById('coupier-score-first').innerHTML = premierTourCroup();
+    main = GDict['croupier']['main'];
+    handStr = '';
+    for (let i = 0; i < main.length - 1; i++) {
+        const element = main[i];
+        handStr += element + ', ';
+    }
+    handStr += main[main.length - 1];
+    document.getElementById('main-croup-first').innerHTML = handStr;
 
     document.getElementById('premiertour').classList.remove('hidden');
+}
+
+function premierTour(joueur) {
+    let cartes2 = piocheCarte(GDict['pioche'], 2);
+    var returnStr = '';
+    for (const key in cartes2) {
+        if (Object.hasOwnProperty.call(cartes2, key)) {
+            GDict['joueurs'][joueur]['score'] += valeurCartes(cartes2[key], GDict['joueurs'][joueur]['score']);
+            GDict['joueurs'][joueur]['main'].push(cartes2[key]);
+        }
+    }
+    returnStr += GDict['joueurs'][joueur]['score'];
+    if (GDict['joueurs'][joueur]['score'] == 21) {
+        GDict['joueurs'][i]['blackjack'] = true;
+        GDict['joueurs'][i]['ingame'] = false;
+        returnStr += ' Blackjack !';
+    }
+    return returnStr;
+}
+
+function premierTourCroup() {
+    let cartes2 = piocheCarte(GDict['pioche'], 2);
+    var returnStr = '';
+    for (const key in cartes2) {
+        if (Object.hasOwnProperty.call(cartes2, key)) {
+            GDict['croupier']['score'] += valeurCartes(cartes2[key], GDict['croupier']['score']);
+            GDict['croupier']['main'].push(cartes2[key]);
+        }
+    }
+    returnStr += GDict['croupier']['score'];
+    if (GDict['croupier']['score'] == 21) {
+        GDict['croupier']['blackjack'] = true;
+        GDict['croupier']['ingame'] = false;
+        returnStr += ' : Blackjack !';
+    }
+    return returnStr;
+}
+
+function openTourJoueur() {
+    document.getElementById('premiertour').classList.add('hidden');
+    loadTourJoueur();
+}
+
+//////////////////
+// TOUR JOUEURS //
+//////////////////
+
+function loadTourJoueur() {
+    document.getElementById('tourjoueur').classList.remove('hidden');
 }
