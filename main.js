@@ -99,7 +99,7 @@ function loadMainMenu() {
         playerList.appendChild(document.createTextNode("Pas de joueurs"));
     } else {
         document.getElementById('remove-player-button').disabled = false;
-        for (const joueur of Object.entries(GDict['joueurs'])) {
+        for (const [joueur] of Object.entries(GDict['joueurs'])) {
             if (GDict['joueurs'][joueur]['type'] == '1') {
                 var str = joueur + " (ordinateur)";
             } else {
@@ -148,7 +148,7 @@ function openNewPlayer() {
 function loadRemovePlayer() {
     var playerSelect = document.getElementById("player-list-select");
     playerSelect.innerHTML = '';
-    for (const joueur of Object.entries(GDict['joueurs'])) {
+    for (const [joueur] of Object.entries(GDict['joueurs'])) {
         const opt = document.createElement("option");
         opt.value = joueur;
         opt.text = joueur;
@@ -234,7 +234,7 @@ function createReturnToMenu() {
 function loadChoixMises() {
     var listMise = document.getElementById("mises-list");
     listMise.innerHTML = '';
-    for (const joueur of Object.entries(GDict['joueurs'])) {
+    for (const [joueur] of Object.entries(GDict['joueurs'])) {
         GDict['joueurs'][joueur]['mise'] = 0;
         var idstr = joueur + "-input-mises";
         var div = document.createElement('div');
@@ -313,7 +313,7 @@ function misesReturnToMenu() {
 }
 
 function openFirstRound() {
-    for (const joueur of Object.entries(GDict['joueurs'])) {
+    for (const [joueur] of Object.entries(GDict['joueurs'])) {
         var idstr = joueur + "-input-mises";
         const mise = parseInt(document.getElementById(idstr).value);
         if (!Number.isInteger(mise) || mise > GDict['joueurs'][joueur]['wallet'] || mise < 1) {
@@ -341,7 +341,7 @@ function loadPremierTour() {
 
     GDict['pioche'] = initPioche();
 
-    for (const joueur of Object.entries(GDict['joueurs'])) {
+    for (const [joueur] of Object.entries(GDict['joueurs'])) {
         GDict['joueurs'][joueur]['score'] = 0;
         GDict['joueurs'][joueur]['ingame'] = true;
         GDict['joueurs'][joueur]['blackjack'] = false;
