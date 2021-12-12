@@ -7,7 +7,7 @@
     <meta name="description" content="Le jeu du Blackjack en JavaScript">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/3004/3004163.png" type="image/png">
-    <title>Blackjack</title>
+    <title>Jeu du Blackjack</title>
 </head>
 <body onload="loadMainMenu()">
     <h1>Jeu du Blackjack</h1>
@@ -112,20 +112,31 @@
      </div>
 
 
-     <div id="tourjoueur" class="main-game-window hidden">
+     <div id="tourjoueur" class="main-game-window">
          <h2>Tour de joueur 3</h2>
-         <div id="scoreautres">
-             <div>
-                <label for="player1score">Joueur 1 :</label>
-                <p>16</p>
+         <div class="inlineflex">
+             <div id="scoreautres">
+                 <h3>Score des autres joueurs :</h3>
+                 <ul>
+                     <li>
+                         <span>Joueur 1 :</span>
+                         <span id="player1score">16</span>
+                         <span>- main : Valet de carreau, 6 de cœur</span>
+                    </li>
+                    <li>
+                         <span>Joueur 2 :</span>
+                         <span id="player2score">12</span>
+                         <span>- main : 8 de trèfle, 4 de carreau</span>
+                    </li>
+                    <li>
+                         <span>Croupier :</span>
+                         <span id="croupscore">20</span>
+                         <span>- main : Valet de carreau, 6 de cœur, 4 de pique</span>
+                    </li>
+                 </ul>
              </div>
-             <div>
-                <label for="player2score">Joueur 2 :</label>
-                <p>8</p>
-             </div>
-             <div>
-                <label for="croupierscore">Croupier :</label>
-                <p id="croupierscore">17</p>
+             <div id="votrescore">
+                 <h3>Votre score</h3>
              </div>
          </div>
 
@@ -154,6 +165,10 @@
             <button>Suivant</button>
         </div>
      </div>
+
+     <footer>
+         <p>© 2021 Virgile Cheminot, Mattheo Genais</p>
+     </footer>
 
      
     <script src="main.js"></script>

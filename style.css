@@ -42,3 +42,16 @@ h1, h2, h3 {
     margin-left: 2.5rem;
     margin-right: 2.5rem;
 }
+
+footer {
+    clear: both;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    text-align: center;
+    vertical-align: middle;
+    margin: 0;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
