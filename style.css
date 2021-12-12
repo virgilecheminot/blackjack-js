@@ -20,9 +20,17 @@ h1, h2, h3 {
     align-items: center;
 }
 
+.bottom button {
+    margin: 1.5rem;
+}
+
 .inlineflex {
     display: flex;
+}
 
+.inlineflex div {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
 }
 
 #player-score-zone {
@@ -31,6 +39,6 @@ h1, h2, h3 {
 }
 
 #player-score-zone div {
-    margin-left: 5rem;
-    margin-left: 5rem;
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
 }
