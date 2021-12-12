@@ -86,39 +86,27 @@
      
      <div id="choixmises" class="main-game-window hidden">
          <h2>Choix des mises</h2>
-         <!-- <div>
-             <label for="player1mise">Joueur 1 :</label>
-             <input type="text" name="player1mise" id="player1mise" size="5">
-         </div> -->
          <div id="mises-list"></div>
 
          <div class="bottom">
              <button id="annuler-mises-button" onclick="misesReturnToMenu()">Annuler</button>
-             <button disabled id="first-round-button">Premier tour</button>
+             <button disabled id="first-round-button" onclick="openFirstRound()">Premier tour</button>
          </div>
      </div>
 
 
      <div id="premiertour" class="main-game-window hidden">
          <h2>Premier tour</h2>
-         <div id="playerScoresZone">
-             <div>
+         <div id="player-score-zone">
+             <!-- <div>
                  <label for="player1score">Joueur 1 :</label>
                  <p>16</p>
-             </div>
-             <div>
-                 <label for="player2score">Joueur 2 :</label>
-                 <p>8</p>
-             </div>
-             <div>
-                 <label for="joueur3score">Joueur 3 :</label>
-                 <p>21</p>
-             </div>
+             </div> -->
          </div>
 
-         <div id="croupierScoreZone">
+         <div id="croupier-score-zone">
              <label for="croupierscore">Croupier :</label>
-             <p id="coupierscore">17</p>
+             <p id="coupier-score-first"></p>
          </div>
          <div class="bottom">
              <button>Suivant</button>
