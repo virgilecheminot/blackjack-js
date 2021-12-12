@@ -48,11 +48,30 @@ function paquet() {
 }
 
 function initPioche() {
-    for (let index = 0; index < array.length; index++) {
-        const element = array[index];
-        
+    let pioche = []; 
+    for (let i = 0; i < Object.keys(GDict['joueurs']).length; i++) {
+        pioche = pioche.concat(paquet());
+    }
+    return pioche;
+}
+
+function valeurCartes(carte, score) {
+    const carteVal = carte.split(' ')[0];
+    if (carteVal == 'As') {
+        return valeurAs(score);
+    } else {
+        return valCartes[carteVal];
     }
 }
+
+function valeurAs(score) {
+    if (score+11 <= 21) {
+        return 11;
+    } else {
+        return 1;
+    }
+}
+
 
 // MAIN MENU
 
