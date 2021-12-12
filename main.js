@@ -1,3 +1,7 @@
+//////////////////////
+// FONCTIONS DE JEU //
+//////////////////////
+
 function fermer() {
     if (confirm('Voulez-vous vraiment quitter ?')) {
         window.close();
@@ -11,6 +15,7 @@ var GDict = {
     'joueurs': {},
     'croupier': {
         'score': 0,
+        'main': [],
         'wallet': 0,
         'ingame': true,
         'blackjack': false,
@@ -41,14 +46,14 @@ function paquet() {
     let paquet = [];
     couleurs.forEach(c => {
         values.forEach(v => {
-            paquet.push(v + ' de ' + c)
+            paquet.push(v + ' de ' + c);
         });
     });
     return paquet;
 }
 
 function initPioche() {
-    let pioche = []; 
+    let pioche = [];
     for (let i = 0; i < Object.keys(GDict['joueurs']).length; i++) {
         pioche = pioche.concat(paquet());
     }
@@ -65,15 +70,24 @@ function valeurCartes(carte, score) {
 }
 
 function valeurAs(score) {
-    if (score+11 <= 21) {
+    if (score + 11 <= 21) {
         return 11;
     } else {
         return 1;
     }
 }
 
+function piocheCarte(pioche, x = 1) {
+    let piochées = [];
+    for (let i = 0; i < x; i++) {
+        piochées.push(pioche.pop());
+    }
+    return piochées;
+}
 
-// MAIN MENU
+///////////////
+// MAIN MENU //
+///////////////
 
 function loadMainMenu() {
     var playerList = document.getElementById("player-list");
@@ -85,7 +99,7 @@ function loadMainMenu() {
         playerList.appendChild(document.createTextNode("Pas de joueurs"));
     } else {
         document.getElementById('remove-player-button').disabled = false;
-        for (const [joueur] of Object.entries(GDict['joueurs'])) {
+        for (const joueur of Object.entries(GDict['joueurs'])) {
             if (GDict['joueurs'][joueur]['type'] == '1') {
                 var str = joueur + " (ordinateur)";
             } else {
@@ -127,13 +141,14 @@ function openNewPlayer() {
     loadCreatePlayer();
 };
 
-
-// REMOVE PLAYER
+///////////////////
+// REMOVE PLAYER //
+///////////////////
 
 function loadRemovePlayer() {
     var playerSelect = document.getElementById("player-list-select");
     playerSelect.innerHTML = '';
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
+    for (const joueur of Object.entries(GDict['joueurs'])) {
         const opt = document.createElement("option");
         opt.value = joueur;
         opt.text = joueur;
@@ -155,8 +170,9 @@ function removeReturnToMenu() {
     loadMainMenu();
 }
 
-
-// CREATE PLAYER
+///////////////////
+// CREATE PLAYER //
+///////////////////
 
 function loadCreatePlayer() {
     document.getElementById('name').value = '';
@@ -196,6 +212,7 @@ function addPlayer() {
             GDict['joueurs'][name]['stratmise'] = stratmise;
         };
         GDict['joueurs'][name]['score'] = 0;
+        GDict['joueurs'][name]['main'] = [];
         GDict['joueurs'][name]['wallet'] = 100;
         GDict['joueurs'][name]['mise'] = 0;
         GDict['joueurs'][name]['ingame'] = true;
@@ -210,12 +227,14 @@ function createReturnToMenu() {
     loadMainMenu();
 }
 
-// CHOIX DES MISES
+/////////////////////
+// CHOIX DES MISES //
+/////////////////////
 
 function loadChoixMises() {
     var listMise = document.getElementById("mises-list");
     listMise.innerHTML = '';
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
+    for (const joueur of Object.entries(GDict['joueurs'])) {
         GDict['joueurs'][joueur]['mise'] = 0;
         var idstr = joueur + "-input-mises";
         var div = document.createElement('div');
@@ -294,10 +313,10 @@ function misesReturnToMenu() {
 }
 
 function openFirstRound() {
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
+    for (const joueur of Object.entries(GDict['joueurs'])) {
         var idstr = joueur + "-input-mises";
         const mise = parseInt(document.getElementById(idstr).value);
-        if (!Number.isInteger(mise) || mise>GDict['joueurs'][joueur]['wallet'] || mise < 1) {
+        if (!Number.isInteger(mise) || mise > GDict['joueurs'][joueur]['wallet'] || mise < 1) {
             window.alert('Mise de ' + joueur + ' incorrecte');
             return;
         }
@@ -312,8 +331,9 @@ function openFirstRound() {
     loadPremierTour();
 }
 
-
-// PREMIER TOUR
+//////////////////
+// PREMIER TOUR //
+//////////////////
 
 function loadPremierTour() {
     var scoreZone = document.getElementById('player-score-zone');
@@ -321,7 +341,13 @@ function loadPremierTour() {
 
     GDict['pioche'] = initPioche();
 
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
+    for (const joueur of Object.entries(GDict['joueurs'])) {
+        GDict['joueurs'][joueur]['score'] = 0;
+        GDict['joueurs'][joueur]['ingame'] = true;
+        GDict['joueurs'][joueur]['blackjack'] = false;
+        GDict['joueurs'][joueur]['burst'] = false;
+        GDict['joueurs'][joueur]['main'] = [];
+
         var idstr = joueur + "-score-zone";
         var div = document.createElement('div');
         var label = document.createElement('label');
@@ -334,6 +360,11 @@ function loadPremierTour() {
         div.appendChild(p);
         scoreZone.appendChild(div);
     }
+    GDict['croupier']['score'] = 0;
+    GDict['croupier']['ingame'] = true;
+    GDict['croupier']['blackjack'] = false;
+    GDict['croupier']['burst'] = false;
+    GDict['croupier']['main'] = [];
     // document.getElementById('coupier-score-first').innerHTML = premierTourCroup();
 
     document.getElementById('premiertour').classList.remove('hidden');
