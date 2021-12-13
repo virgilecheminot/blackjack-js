@@ -482,7 +482,9 @@ function openTourJoueur() {
 //////////////////
 // TOUR JOUEURS //
 //////////////////
+
 var playerindex;
+
 function loadTourJoueur() {
     playerindex = 0;
     document.getElementById("tourjoueur").classList.remove("hidden");
@@ -490,6 +492,9 @@ function loadTourJoueur() {
 }
 
 function tourJoueur() {
+    document.getElementById("rester-button").classList.add("hidden");
+    document.getElementById("piocher-button").classList.add("hidden");
+    document.getElementById("suivant-ordi-button").classList.add("hidden");
     document.getElementById("title-tour-joueur").innerHTML =
         "Tour de " + GDict["playlist"][playerindex];
     listeAutres = document.getElementById("list-score-autres");
@@ -544,11 +549,19 @@ function tourJoueur() {
     }
     document.getElementById("score-joueur").innerHTML = scoreStr;
 
-    if (GDict["joueurs"][GDict["playlist"][playerindex]]["type"] == "1") {
+    if (GDict["joueurs"][GDict["playlist"][playerindex]]["type"] == "1" && GDict['joueurs'][GDict['playlist'][playerindex]]['ingame']) {
         document.getElementById("rester-button").classList.add("hidden");
         document.getElementById("piocher-button").classList.add("hidden");
         tourOrdinateur();
     } else if (!GDict["joueurs"][GDict["playlist"][playerindex]]["ingame"]) {
+        document.getElementById("rester-button").classList.add("hidden");
+        document.getElementById("piocher-button").classList.add("hidden");
+        document.getElementById("suivant-ordi-button").classList.remove("hidden");
+    } else if (GDict['joueurs'][GDict['playlist'][playerindex]]['ingame']) {
+        document.getElementById("rester-button").classList.remove("hidden");
+        document.getElementById("piocher-button").classList.remove("hidden");
+        document.getElementById("suivant-ordi-button").classList.add("hidden");
+    } else {
         document.getElementById("rester-button").classList.add("hidden");
         document.getElementById("piocher-button").classList.add("hidden");
         document.getElementById("suivant-ordi-button").classList.remove("hidden");
@@ -640,7 +653,8 @@ function piocherHumain() {
 function tourOrdinateur() {
     const joueur = GDict["playlist"][playerindex];
     selectContinue(joueur);
-    while (GDict["joueurs"][joueur]["ingame"]) {
+    var cont = GDict["joueurs"][joueur]["ingame"];
+    while (cont == true) {
         let carte = piocheCarte(GDict["pioche"])[0];
         console.log(joueur + ' pioche!')
         GDict["joueurs"][joueur]["main"].push(carte);
@@ -649,14 +663,15 @@ function tourOrdinateur() {
         if (GDict["joueurs"][joueur]["score"] == 21) {
             GDict["joueurs"][joueur]["ingame"] = false;
         } else if (GDict["joueurs"][joueur]["score"] > 21) {
-            console.log('burst')
+            console.log(joueur);
             GDict["joueurs"][joueur]["ingame"] = false;
             GDict["joueurs"][joueur]["burst"] = true;
         } else {
             selectContinue(joueur);
         }
-        GDict["joueurs"][joueur]['ingame'] = false;
+        cont = GDict["joueurs"][joueur]["ingame"];
     }
+    document.getElementById('suivant-ordi-button').classList.remove('hidden');
     tourJoueur();
 }
 
@@ -778,5 +793,14 @@ function suivant() {
 
 function openResumePartie() {
     document.getElementById("tourjoueur").classList.add("hidden");
+    loadResume();
+}
+
+
+///////////////////
+// RÉSUMÉ PARTIE //
+///////////////////
+
+function loadResume() {
     document.getElementById("resumepartie").classList.remove("hidden");
 }
