@@ -895,49 +895,40 @@ function gain(joueur) {
     if (burst) {
         GDict["croupier"]["wallet"] += mise;
         gain -= mise;
-        console.log('0');
 
     } else if (GDict["croupier"]["burst"]) {
         if (blackjack) {
             GDict["joueurs"][joueur]["wallet"] += 2.5 * mise;
             GDict["croupier"]["wallet"] -= 1.5 * mise;
             gain += 1.5 * mise;
-            console.log('1');
         } else {
             GDict["joueurs"][joueur]["wallet"] += 2 * mise;
             GDict["croupier"]["wallet"] -= mise;
             gain += mise;
-            console.log('2');
         }
     } else if (GDict["croupier"]["blackjack"]) {
         if (blackjack) {
             GDict["joueurs"][joueur]["wallet"] += 2 * mise;
             GDict["croupier"]["wallet"] -= mise;
             gain += mise;
-            console.log('5');
         } else {
             GDict["croupier"]["wallet"] += mise;
             gain -= mise;
-            console.log('4');
         }
     } else {
         if (blackjack) {
             GDict["joueurs"][joueur]["wallet"] += 2.5 * mise;
             GDict["croupier"]["wallet"] -= 1.5 * mise;
             gain += 1.5 * mise;
-            console.log('6');
         } else if (score > GDict["croupier"]["score"]) {
             GDict["joueurs"][joueur]["wallet"] += 2 * mise;
             GDict["croupier"]["wallet"] -= mise;
             gain += mise;
-            console.log('7');
         } else if (score == GDict["croupier"]["score"]) {
             GDict["joueurs"][joueur]["wallet"] += mise;
-            console.log('8');
         } else {
             GDict["croupier"]["wallet"] += mise;
             gain -= mise;
-            console.log('9');
         }
     }
     if (gain >= 0) {
