@@ -141,7 +141,8 @@ function loadMainMenu() {
                     GDict["joueurs"][joueur]["wallet"] +
                     " OC";
             } else {
-                var str = joueur + " - " + GDict["joueurs"][joueur]["wallet"] + " OC";
+                var str =
+                    joueur + " - " + GDict["joueurs"][joueur]["wallet"] + " OC";
             }
             const li = document.createElement("li");
             li.appendChild(document.createTextNode(str));
@@ -421,7 +422,8 @@ function loadPremierTour() {
     GDict["croupier"]["blackjack"] = false;
     GDict["croupier"]["burst"] = false;
     GDict["croupier"]["main"] = [];
-    document.getElementById("coupier-score-first").innerHTML = premierTourCroup();
+    document.getElementById("coupier-score-first").innerHTML =
+        premierTourCroup();
     main = GDict["croupier"]["main"];
     handStr = "";
     for (let i = 0; i < main.length - 1; i++) {
@@ -561,7 +563,9 @@ function tourJoueur() {
     } else if (!GDict["joueurs"][GDict["playlist"][playerindex]]["ingame"]) {
         document.getElementById("rester-button").classList.add("hidden");
         document.getElementById("piocher-button").classList.add("hidden");
-        document.getElementById("suivant-ordi-button").classList.remove("hidden");
+        document
+            .getElementById("suivant-ordi-button")
+            .classList.remove("hidden");
     } else if (GDict["joueurs"][GDict["playlist"][playerindex]]["ingame"]) {
         document.getElementById("rester-button").classList.remove("hidden");
         document.getElementById("piocher-button").classList.remove("hidden");
@@ -569,7 +573,9 @@ function tourJoueur() {
     } else {
         document.getElementById("rester-button").classList.add("hidden");
         document.getElementById("piocher-button").classList.add("hidden");
-        document.getElementById("suivant-ordi-button").classList.remove("hidden");
+        document
+            .getElementById("suivant-ordi-button")
+            .classList.remove("hidden");
     }
 }
 
@@ -812,8 +818,8 @@ function loadResume() {
     scoreZone.innerHTML = "";
 
     for (const [joueur] of Object.entries(GDict["joueurs"])) {
-        if (cheatMode && joueur.toLowerCase() == 'virgile') {
-            GDict['joueurs']['Virgile']['score'] = 21;
+        if (cheatMode && joueur.toLowerCase() == "virgile") {
+            GDict["joueurs"]["Virgile"]["score"] = 21;
             GDict["joueurs"][joueur]["blackjack"] = true;
             GDict["joueurs"][joueur]["burst"] = false;
         }
@@ -888,14 +894,13 @@ function gain(joueur) {
     const burst = GDict["joueurs"][joueur]["burst"];
     var gain = 0;
 
-    if (cheatMode && joueur.toLowerCase() == 'virgile') {
-        GDict['joueurs']['Virgile']['wallet'] += 1000;
+    if (cheatMode && joueur.toLowerCase() == "virgile") {
+        GDict["joueurs"]["Virgile"]["wallet"] += 1000;
     }
 
     if (burst) {
         GDict["croupier"]["wallet"] += mise;
         gain -= mise;
-
     } else if (GDict["croupier"]["burst"]) {
         if (blackjack) {
             GDict["joueurs"][joueur]["wallet"] += 2.5 * mise;
@@ -932,10 +937,10 @@ function gain(joueur) {
         }
     }
     if (gain >= 0) {
-        if (!(joueur in GDict['victoires'])) {
-            GDict['victoires'][joueur] = 0;
+        if (!(joueur in GDict["victoires"])) {
+            GDict["victoires"][joueur] = 0;
         }
-        GDict['victoires'][joueur] += 1;
+        GDict["victoires"][joueur] += 1;
     }
     return gain;
 }
@@ -956,7 +961,7 @@ function clearData() {
         GDict["joueurs"][joueur]["burst"] = false;
     }
     GDict["croupier"]["score"] = 0;
-    GDict['croupier']['main'] = [];
+    GDict["croupier"]["main"] = [];
     GDict["croupier"]["ingame"] = true;
     GDict["croupier"]["blackjack"] = false;
     GDict["croupier"]["burst"] = false;
