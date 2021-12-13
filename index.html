@@ -112,37 +112,23 @@
      </div>
 
 
-     <div id="tourjoueur" class="main-game-window">
-         <h2>Tour de joueur 3</h2>
+     <div id="tourjoueur" class="main-game-window hidden">
+         <h2 id="title-tour-joueur">Tour de joueur 3</h2>
          <div class="inlineflex">
              <div id="scoreautres">
                  <h3>Score des autres joueurs :</h3>
-                 <ul>
-                     <li>
-                         <span>Joueur 1 :</span>
-                         <span id="player1score">16</span>
-                         <span>- main : Valet de carreau, 6 de cœur</span>
-                    </li>
-                    <li>
-                         <span>Joueur 2 :</span>
-                         <span id="player2score">12</span>
-                         <span>- main : 8 de trèfle, 4 de carreau</span>
-                    </li>
-                    <li>
-                         <span>Croupier :</span>
-                         <span id="croupscore">20</span>
-                         <span>- main : Valet de carreau, 6 de cœur, 4 de pique</span>
-                    </li>
-                 </ul>
+                 <ul id="list-score-autres"></ul>
              </div>
-             <div id="votrescore">
-                 <h3>Votre score</h3>
+             <div id="votrescore" style="text-align: center;">
+                 <h3>Votre score :</h3>
+                 <h2 id="score-joueur"></h2>
              </div>
          </div>
 
          <div class="bottom">
-            <button>Rester</button>
-            <button>Piocher</button>
+            <button id="rester-button" class="" onclick="rester()">Rester</button>
+            <button id="piocher-button" class="" onclick="piocherHumain()">Piocher</button>
+            <button id="suivant-ordi-button" class="hidden" onclick="suivant()">Suivant</button>
          </div>
      </div>
 

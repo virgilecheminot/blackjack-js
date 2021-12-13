@@ -3,50 +3,73 @@
 //////////////////////
 
 function fermer() {
-    if (confirm('Voulez-vous vraiment quitter ?')) {
+    if (confirm("Voulez-vous vraiment quitter ?")) {
         window.close();
     }
 }
 
 var GDict = {
-    'pioche': [],
-    'stratlist': ['alea', 'risk', 'safe', 'intel', 'croupNormal', 'croupFacile', 'croupDiff'],
-    'stratmiselist': ['miseAlea', 'miseFaible', 'miseForte'],
-    'joueurs': {},
-    'croupier': {
-        'score': 0,
-        'main': [],
-        'wallet': 0,
-        'ingame': true,
-        'blackjack': false,
-        'burst': false
+    pioche: [],
+    stratlist: [
+        "alea",
+        "risk",
+        "safe",
+        "intel",
+        "croupNormal",
+        "croupFacile",
+        "croupDiff",
+    ],
+    stratmiselist: ["miseAlea", "miseFaible", "miseForte"],
+    joueurs: {},
+    croupier: {
+        score: 0,
+        main: [],
+        wallet: 0,
+        ingame: true,
+        blackjack: false,
+        burst: false,
     },
-    'victoires': {}
+    victoires: {},
+    playlist: [],
 };
 
-const couleurs = ['pique', 'trèfle', 'cœur', 'carreau'];
-const values = ['As', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Valet', 'Dame', 'Roi'];
+const couleurs = ["pique", "trèfle", "cœur", "carreau"];
+const values = [
+    "As",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "Valet",
+    "Dame",
+    "Roi",
+];
 
 const valCartes = {
-    '2': 2,
-    '3': 3,
-    '4': 4,
-    '5': 5,
-    '6': 6,
-    '7': 7,
-    '8': 8,
-    '9': 9,
-    '10': 10,
-    'Valet': 10,
-    'Dame': 10,
-    'Roi': 10
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+    7: 7,
+    8: 8,
+    9: 9,
+    10: 10,
+    Valet: 10,
+    Dame: 10,
+    Roi: 10,
 };
 
 function paquet() {
     let paquet = [];
-    couleurs.forEach(c => {
-        values.forEach(v => {
-            paquet.push(v + ' de ' + c);
+    couleurs.forEach((c) => {
+        values.forEach((v) => {
+            paquet.push(v + " de " + c);
         });
     });
     return paquet;
@@ -54,10 +77,10 @@ function paquet() {
 
 function initPioche() {
     let pioche = [];
-    for (let i = 0; i < Object.keys(GDict['joueurs']).length; i++) {
+    for (let i = 0; i < Object.keys(GDict["joueurs"]).length; i++) {
         pioche = pioche.concat(paquet());
     }
-    const mélange = array => {
+    const mélange = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             const temp = array[i];
@@ -70,8 +93,8 @@ function initPioche() {
 }
 
 function valeurCartes(carte, score) {
-    const carteVal = carte.split(' ')[0];
-    if (carteVal == 'As') {
+    const carteVal = carte.split(" ")[0];
+    if (carteVal == "As") {
         return valeurAs(score);
     } else {
         return valCartes[carteVal];
@@ -101,54 +124,58 @@ function piocheCarte(pioche, x = 1) {
 function loadMainMenu() {
     var playerList = document.getElementById("player-list");
     var victoryList = document.getElementById("victory-list");
-    playerList.innerHTML = '';
-    victoryList.innerHTML = '';
-    if (Object.keys(GDict['joueurs']).length == 0) {
-        document.getElementById('remove-player-button').disabled = true;
+    playerList.innerHTML = "";
+    victoryList.innerHTML = "";
+    if (Object.keys(GDict["joueurs"]).length == 0) {
+        document.getElementById("remove-player-button").disabled = true;
         playerList.appendChild(document.createTextNode("Pas de joueurs"));
     } else {
-        document.getElementById('remove-player-button').disabled = false;
-        for (const [joueur] of Object.entries(GDict['joueurs'])) {
-            if (GDict['joueurs'][joueur]['type'] == '1') {
-                var str = joueur + " (ordinateur) - " + GDict['joueurs'][joueur]['wallet'] + 'OC';
+        document.getElementById("remove-player-button").disabled = false;
+        for (const [joueur] of Object.entries(GDict["joueurs"])) {
+            if (GDict["joueurs"][joueur]["type"] == "1") {
+                var str =
+                    joueur +
+                    " (ordinateur) - " +
+                    GDict["joueurs"][joueur]["wallet"] +
+                    "OC";
             } else {
-                var str = joueur + ' - ' + GDict['joueurs'][joueur]['wallet'] + ' OC';
+                var str = joueur + " - " + GDict["joueurs"][joueur]["wallet"] + " OC";
             }
             const li = document.createElement("li");
             li.appendChild(document.createTextNode(str));
             playerList.appendChild(li);
-        };
+        }
     }
-    if (Object.keys(GDict['victoires']).length == 0) {
+    if (Object.keys(GDict["victoires"]).length == 0) {
         victoryList.appendChild(document.createTextNode("Aucune victoire"));
     } else {
-        for (const [joueur, vic] of Object.entries(GDict['victoires'])) {
+        for (const [joueur, vic] of Object.entries(GDict["victoires"])) {
             const li = document.createElement("li");
             li.appendChild(document.createTextNode(joueur + " : " + vic));
             victoryList.appendChild(li);
-        };
+        }
     }
-    document.getElementById('landingpage').classList.remove('hidden');
+    document.getElementById("landingpage").classList.remove("hidden");
 }
 
 function openChoixMises() {
-    if (Object.keys(GDict['joueurs']).length == 0) {
+    if (Object.keys(GDict["joueurs"]).length == 0) {
         window.alert("Vous devez ajouter des joueurs");
     } else {
-        document.getElementById('landingpage').classList.add('hidden');
+        document.getElementById("landingpage").classList.add("hidden");
         loadChoixMises();
     }
 }
 
 function openRemovePlayer() {
-    document.getElementById('landingpage').classList.add('hidden');
+    document.getElementById("landingpage").classList.add("hidden");
     loadRemovePlayer();
 }
 
 function openNewPlayer() {
-    document.getElementById('landingpage').classList.add('hidden');
+    document.getElementById("landingpage").classList.add("hidden");
     loadCreatePlayer();
-};
+}
 
 ///////////////////
 // REMOVE PLAYER //
@@ -156,26 +183,26 @@ function openNewPlayer() {
 
 function loadRemovePlayer() {
     var playerSelect = document.getElementById("player-list-select");
-    playerSelect.innerHTML = '';
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
+    playerSelect.innerHTML = "";
+    for (const [joueur] of Object.entries(GDict["joueurs"])) {
         const opt = document.createElement("option");
         opt.value = joueur;
         opt.text = joueur;
         playerSelect.add(opt, null);
     }
-    document.getElementById('removeplayer').classList.remove('hidden');
+    document.getElementById("removeplayer").classList.remove("hidden");
 }
 
 function removePlayer() {
     var playerSelected = document.getElementById("player-list-select").value;
     if (confirm("Voulez-vous vraiment retirer " + playerSelected + " ?")) {
-        delete GDict['joueurs'][playerSelected];
+        delete GDict["joueurs"][playerSelected];
         removeReturnToMenu();
     }
 }
 
 function removeReturnToMenu() {
-    document.getElementById('removeplayer').classList.add('hidden');
+    document.getElementById("removeplayer").classList.add("hidden");
     loadMainMenu();
 }
 
@@ -184,8 +211,8 @@ function removeReturnToMenu() {
 ///////////////////
 
 function loadCreatePlayer() {
-    document.getElementById('name').value = '';
-    document.getElementById('createplayer').classList.remove('hidden');
+    document.getElementById("name").value = "";
+    document.getElementById("createplayer").classList.remove("hidden");
 }
 
 function stoppedTypingCreate() {
@@ -197,42 +224,42 @@ function stoppedTypingCreate() {
 }
 
 function stratOnChange() {
-    if (document.getElementById('type').value == '0') {
-        document.getElementById('strat').disabled = true;
-        document.getElementById('stratmise').disabled = true;
+    if (document.getElementById("type").value == "0") {
+        document.getElementById("strat").disabled = true;
+        document.getElementById("stratmise").disabled = true;
     } else {
-        document.getElementById('strat').disabled = false;
-        document.getElementById('stratmise').disabled = false;
+        document.getElementById("strat").disabled = false;
+        document.getElementById("stratmise").disabled = false;
     }
 }
 
 function addPlayer() {
-    var name = document.getElementById('name').value;
-    if (Object.keys(GDict['joueurs']).includes(name)) {
+    var name = document.getElementById("name").value;
+    if (Object.keys(GDict["joueurs"]).includes(name)) {
         window.alert("Le nom est déjà pris, veuillez en entrer un autre");
     } else {
-        var type = document.getElementById('type').value;
-        var strat = document.getElementById('strat').value;
-        var stratmise = document.getElementById('stratmise').value;
-        GDict['joueurs'][name] = {};
-        GDict['joueurs'][name]['type'] = type;
-        if (type == '1') {
-            GDict['joueurs'][name]['strat'] = strat;
-            GDict['joueurs'][name]['stratmise'] = stratmise;
-        };
-        GDict['joueurs'][name]['score'] = 0;
-        GDict['joueurs'][name]['main'] = [];
-        GDict['joueurs'][name]['wallet'] = 100;
-        GDict['joueurs'][name]['mise'] = 0;
-        GDict['joueurs'][name]['ingame'] = true;
-        GDict['joueurs'][name]['blackjack'] = false;
-        GDict['joueurs'][name]['burst'] = false;
+        var type = document.getElementById("type").value;
+        var strat = document.getElementById("strat").value;
+        var stratmise = document.getElementById("stratmise").value;
+        GDict["joueurs"][name] = {};
+        GDict["joueurs"][name]["type"] = type;
+        if (type == "1") {
+            GDict["joueurs"][name]["strat"] = strat;
+            GDict["joueurs"][name]["stratmise"] = stratmise;
+        }
+        GDict["joueurs"][name]["score"] = 0;
+        GDict["joueurs"][name]["main"] = [];
+        GDict["joueurs"][name]["wallet"] = 100;
+        GDict["joueurs"][name]["mise"] = 0;
+        GDict["joueurs"][name]["ingame"] = true;
+        GDict["joueurs"][name]["blackjack"] = false;
+        GDict["joueurs"][name]["burst"] = false;
         createReturnToMenu();
     }
 }
 
 function createReturnToMenu() {
-    document.getElementById('createplayer').classList.add('hidden');
+    document.getElementById("createplayer").classList.add("hidden");
     loadMainMenu();
 }
 
@@ -242,105 +269,110 @@ function createReturnToMenu() {
 
 function loadChoixMises() {
     var listMise = document.getElementById("mises-list");
-    listMise.innerHTML = '';
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
-        if (GDict['joueurs'][joueur]['wallet'] < 1) {
-            delete GDict['joueurs'][joueur];
+    listMise.innerHTML = "";
+    for (const [joueur] of Object.entries(GDict["joueurs"])) {
+        if (GDict["joueurs"][joueur]["wallet"] < 1) {
+            delete GDict["joueurs"][joueur];
         } else {
-            GDict['joueurs'][joueur]['mise'] = 0;
+            GDict["joueurs"][joueur]["mise"] = 0;
             var idstr = joueur + "-input-mises";
-            var div = document.createElement('div');
-            var label = document.createElement('label');
-            var input = document.createElement('input');
+            var div = document.createElement("div");
+            var label = document.createElement("label");
+            var input = document.createElement("input");
             label.setAttribute("for", idstr);
             label.innerHTML = joueur + " :";
-            input.setAttribute('type', 'text');
+            input.setAttribute("type", "text");
             input.id = idstr;
-            input.setAttribute('size', '5');
-            input.onchange = function () { stoppedTypingMises(idstr); };
-            input.value = '';
+            input.setAttribute("size", "5");
+            input.onchange = function () {
+                stoppedTypingMises(idstr);
+            };
+            input.value = "";
             div.appendChild(label);
             div.appendChild(input);
             listMise.appendChild(div);
-            if (GDict['joueurs'][joueur]['type'] == '1') {
-                var mise = choixMisesOrdi(GDict['joueurs'][joueur]['stratmise'], GDict['joueurs'][joueur]['wallet']);
+            if (GDict["joueurs"][joueur]["type"] == "1") {
+                var mise = choixMisesOrdi(
+                    GDict["joueurs"][joueur]["stratmise"],
+                    GDict["joueurs"][joueur]["wallet"]
+                );
                 input.value = mise;
                 input.disabled = true;
             }
             stoppedTypingMises(idstr);
         }
     }
-    document.getElementById('choixmises').classList.remove('hidden');
+    document.getElementById("choixmises").classList.remove("hidden");
 }
-
 
 function choixMisesOrdi(strat, wallet) {
     switch (strat) {
-        case 'miseAlea':
+        case "miseAlea":
             return miseAlea(wallet);
-        case 'miseFaible':
+        case "miseFaible":
             return miseFaible(wallet);
-        case 'miseForte':
+        case "miseForte":
             return miseForte(wallet);
         default:
-            console.log('erreur choix mise');
+            console.log("erreur choix mise");
     }
 }
-
 
 function miseAlea(wallet) {
     let mise = Math.floor(Math.random() * Math.floor(wallet)) + 1;
     return mise;
 }
 
-
 function miseFaible(wallet) {
     let mise = Math.floor(Math.random() * Math.floor(wallet)) + 1;
-    while (mise > (0.25 * wallet)) {
+    while (mise > 0.25 * wallet) {
         mise = Math.floor(Math.random() * Math.floor(wallet)) + 1;
     }
     return mise;
 }
-
 
 function miseForte(wallet) {
     let mise = Math.floor(Math.random() * Math.floor(wallet)) + 1;
-    while (mise < (0.75 * wallet)) {
+    while (mise < 0.75 * wallet) {
         mise = Math.floor(Math.random() * Math.floor(wallet)) + 1;
     }
     return mise;
 }
 
-
 function stoppedTypingMises(input_id) {
     if (document.getElementById(input_id).value.length > 0) {
-        document.getElementById('first-round-button').disabled = false;
+        document.getElementById("first-round-button").disabled = false;
     } else {
-        document.getElementById('first-round-button').disabled = true;
+        document.getElementById("first-round-button").disabled = true;
     }
 }
 
 function misesReturnToMenu() {
-    document.getElementById('choixmises').classList.add('hidden');
+    document.getElementById("choixmises").classList.add("hidden");
     loadMainMenu();
 }
 
 function openFirstRound() {
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
+    for (const [joueur] of Object.entries(GDict["joueurs"])) {
         var idstr = joueur + "-input-mises";
         const mise = parseInt(document.getElementById(idstr).value);
-        if (!Number.isInteger(mise) || mise > GDict['joueurs'][joueur]['wallet'] || mise < 1) {
-            window.alert('Mise de ' + joueur + ' incorrecte');
+        if (
+            !Number.isInteger(mise) ||
+            mise > GDict["joueurs"][joueur]["wallet"] ||
+            mise < 1
+        ) {
+            window.alert("Mise de " + joueur + " incorrecte");
             return;
         }
     }
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
+    for (const [joueur] of Object.entries(GDict["joueurs"])) {
         var idstr = joueur + "-input-mises";
         const mise = parseInt(document.getElementById(idstr).value);
-        GDict['joueurs'][joueur]['mise'] = mise;
-        GDict['joueurs'][joueur]['wallet'] -= mise;
+        GDict["joueurs"][joueur]["mise"] = mise;
+        GDict["joueurs"][joueur]["wallet"] -= mise;
     }
-    document.getElementById('choixmises').classList.add('hidden');
+    document.getElementById("choixmises").classList.add("hidden");
+    GDict["playlist"] = Object.keys(GDict["joueurs"]);
     loadPremierTour();
 }
 
@@ -349,102 +381,216 @@ function openFirstRound() {
 //////////////////
 
 function loadPremierTour() {
-    var scoreZone = document.getElementById('player-score-zone');
-    scoreZone.innerHTML = '';
+    var scoreZone = document.getElementById("player-score-zone");
+    scoreZone.innerHTML = "";
 
-    GDict['pioche'] = initPioche();
+    GDict["pioche"] = initPioche();
 
-    for (const [joueur] of Object.entries(GDict['joueurs'])) {
-        GDict['joueurs'][joueur]['score'] = 0;
-        GDict['joueurs'][joueur]['ingame'] = true;
-        GDict['joueurs'][joueur]['blackjack'] = false;
-        GDict['joueurs'][joueur]['burst'] = false;
-        GDict['joueurs'][joueur]['main'] = [];
+    for (const [joueur] of Object.entries(GDict["joueurs"])) {
+        GDict["joueurs"][joueur]["score"] = 0;
+        GDict["joueurs"][joueur]["ingame"] = true;
+        GDict["joueurs"][joueur]["blackjack"] = false;
+        GDict["joueurs"][joueur]["burst"] = false;
+        GDict["joueurs"][joueur]["main"] = [];
 
         var idstr = joueur + "-score-zone";
-        var div = document.createElement('div');
-        var h3 = document.createElement('h3');
-        var p = document.createElement('p');
-        var phand = document.createElement('p');
+        var div = document.createElement("div");
+        var h3 = document.createElement("h3");
+        var p = document.createElement("p");
+        var phand = document.createElement("p");
         h3.innerHTML = joueur + " :";
         p.id = idstr;
         p.innerHTML = premierTour(joueur);
-        main = GDict['joueurs'][joueur]['main'];
-        handStr = '';
-        for (let i = 0; i < main.length-1; i++) {
+        main = GDict["joueurs"][joueur]["main"];
+        handStr = "";
+        for (let i = 0; i < main.length - 1; i++) {
             const element = main[i];
-            handStr += element + ', ';
+            handStr += element + ", ";
         }
-        handStr += main[main.length-1]
+        handStr += main[main.length - 1];
         phand.innerHTML = handStr;
         div.appendChild(h3);
         div.appendChild(p);
         div.appendChild(phand);
         scoreZone.appendChild(div);
     }
-    GDict['croupier']['score'] = 0;
-    GDict['croupier']['ingame'] = true;
-    GDict['croupier']['blackjack'] = false;
-    GDict['croupier']['burst'] = false;
-    GDict['croupier']['main'] = [];
-    document.getElementById('coupier-score-first').innerHTML = premierTourCroup();
-    main = GDict['croupier']['main'];
-    handStr = '';
+    GDict["croupier"]["score"] = 0;
+    GDict["croupier"]["ingame"] = true;
+    GDict["croupier"]["blackjack"] = false;
+    GDict["croupier"]["burst"] = false;
+    GDict["croupier"]["main"] = [];
+    document.getElementById("coupier-score-first").innerHTML = premierTourCroup();
+    main = GDict["croupier"]["main"];
+    handStr = "";
     for (let i = 0; i < main.length - 1; i++) {
         const element = main[i];
-        handStr += element + ', ';
+        handStr += element + ", ";
     }
     handStr += main[main.length - 1];
-    document.getElementById('main-croup-first').innerHTML = handStr;
+    document.getElementById("main-croup-first").innerHTML = handStr;
 
-    document.getElementById('premiertour').classList.remove('hidden');
+    document.getElementById("premiertour").classList.remove("hidden");
 }
 
 function premierTour(joueur) {
-    let cartes2 = piocheCarte(GDict['pioche'], 2);
-    var returnStr = '';
+    let cartes2 = piocheCarte(GDict["pioche"], 2);
+    var returnStr = "";
     for (const key in cartes2) {
         if (Object.hasOwnProperty.call(cartes2, key)) {
-            GDict['joueurs'][joueur]['score'] += valeurCartes(cartes2[key], GDict['joueurs'][joueur]['score']);
-            GDict['joueurs'][joueur]['main'].push(cartes2[key]);
+            GDict["joueurs"][joueur]["score"] += valeurCartes(
+                cartes2[key],
+                GDict["joueurs"][joueur]["score"]
+            );
+            GDict["joueurs"][joueur]["main"].push(cartes2[key]);
         }
     }
-    returnStr += GDict['joueurs'][joueur]['score'];
-    if (GDict['joueurs'][joueur]['score'] == 21) {
-        GDict['joueurs'][i]['blackjack'] = true;
-        GDict['joueurs'][i]['ingame'] = false;
-        returnStr += ' Blackjack !';
+    returnStr += GDict["joueurs"][joueur]["score"];
+    if (GDict["joueurs"][joueur]["score"] == 21) {
+        GDict["joueurs"][joueur]["blackjack"] = true;
+        GDict["joueurs"][joueur]["ingame"] = false;
+        returnStr += " Blackjack !";
     }
     return returnStr;
 }
 
 function premierTourCroup() {
-    let cartes2 = piocheCarte(GDict['pioche'], 2);
-    var returnStr = '';
+    let cartes2 = piocheCarte(GDict["pioche"], 2);
+    var returnStr = "";
     for (const key in cartes2) {
         if (Object.hasOwnProperty.call(cartes2, key)) {
-            GDict['croupier']['score'] += valeurCartes(cartes2[key], GDict['croupier']['score']);
-            GDict['croupier']['main'].push(cartes2[key]);
+            GDict["croupier"]["score"] += valeurCartes(
+                cartes2[key],
+                GDict["croupier"]["score"]
+            );
+            GDict["croupier"]["main"].push(cartes2[key]);
         }
     }
-    returnStr += GDict['croupier']['score'];
-    if (GDict['croupier']['score'] == 21) {
-        GDict['croupier']['blackjack'] = true;
-        GDict['croupier']['ingame'] = false;
-        returnStr += ' : Blackjack !';
+    returnStr += GDict["croupier"]["score"];
+    if (GDict["croupier"]["score"] == 21) {
+        GDict["croupier"]["blackjack"] = true;
+        GDict["croupier"]["ingame"] = false;
+        returnStr += " : Blackjack !";
     }
     return returnStr;
 }
 
 function openTourJoueur() {
-    document.getElementById('premiertour').classList.add('hidden');
+    document.getElementById("premiertour").classList.add("hidden");
     loadTourJoueur();
 }
 
 //////////////////
 // TOUR JOUEURS //
 //////////////////
-
+var playerindex;
 function loadTourJoueur() {
-    document.getElementById('tourjoueur').classList.remove('hidden');
+    playerindex = 0;
+    document.getElementById("tourjoueur").classList.remove("hidden");
+    tourJoueur();
+}
+
+function tourJoueur() {
+    document.getElementById("title-tour-joueur").innerHTML =
+        "Tour de " + GDict["playlist"][playerindex];
+    listeAutres = document.getElementById("list-score-autres");
+    listeAutres.innerHTML = "";
+    for (const [j] of Object.entries(GDict["joueurs"])) {
+        if (j != GDict["playlist"][playerindex]) {
+            var idstr = j + "-score-autres";
+            var li = document.createElement("li");
+            li.id = idstr;
+            var spanT = document.createElement("span");
+            var spanS = document.createElement("span");
+            var spanM = document.createElement("span");
+            spanT.innerHTML = j + " : ";
+            spanS.innerHTML = GDict["joueurs"][j]["score"] + " ";
+            main = GDict["joueurs"][GDict["playlist"][playerindex]]["main"];
+            handStr = "";
+            for (let i = 0; i < main.length - 1; i++) {
+                const element = main[i];
+                handStr += element + ", ";
+            }
+            handStr += main[main.length - 1];
+            spanM.innerHTML = "-" + handStr;
+            li.appendChild(spanT);
+            li.appendChild(spanS);
+            li.appendChild(spanM);
+            listeAutres.appendChild(li);
+        }
+    }
+    var li = document.createElement("li");
+    li.id = "croup-score-autres";
+    var spanT = document.createElement("span");
+    var spanS = document.createElement("span");
+    var spanM = document.createElement("span");
+    spanT.innerHTML = "Croupier : ";
+    spanS.innerHTML = GDict["croupier"]["score"] + " ";
+    main = GDict["croupier"]["main"];
+    handStr = "";
+    for (let i = 0; i < main.length - 1; i++) {
+        const element = main[i];
+        handStr += element + ", ";
+    }
+    handStr += main[main.length - 1];
+    spanM.innerHTML = " - " + handStr;
+    li.appendChild(spanT);
+    li.appendChild(spanS);
+    li.appendChild(spanM);
+    listeAutres.appendChild(li);
+
+    scoreStr = GDict["joueurs"][GDict["playlist"][playerindex]]["score"]; 
+    if (GDict['joueurs'][GDict["playlist"][playerindex]]["burst"]) {
+        scoreStr += ' Perdu !';
+    }
+    document.getElementById("score-joueur").innerHTML = scoreStr;
+
+    if (GDict["joueurs"][GDict["playlist"][playerindex]]["type"] == "1") {
+        document.getElementById("rester-button").classList.add("hidden");
+        document.getElementById("piocher-button").classList.add("hidden");
+    } else if (!GDict["joueurs"][GDict["playlist"][playerindex]]["ingame"]) {
+        document.getElementById("rester-button").classList.add("hidden");
+        document.getElementById("piocher-button").classList.add("hidden");
+        document.getElementById("suivant-ordi-button").classList.remove("hidden");
+    }
+}
+
+function piocherHumain() {
+    const joueur = GDict["playlist"][playerindex];
+    let carte = piocheCarte(GDict['pioche'])[0];
+    GDict['joueurs'][joueur]['main'].push(carte);
+    GDict['joueurs'][joueur]['score'] += valeurCartes(carte,GDict['joueurs'][joueur]['score']);
+    if (GDict['joueurs'][joueur]['score'] == 21) {
+        GDict['joueurs'][joueur]['ingame'] = false;
+    } else if (GDict['joueurs'][joueur]['score'] > 21) {
+        GDict['joueurs'][joueur]['ingame'] = false;
+        GDict['joueurs'][joueur]['burst'] = true;
+    }
+    tourJoueur();
+}
+
+function rester() {
+    if (playerindex >= GDict["playlist"].length - 1) {
+        openResumePartie();
+    } else {
+        const joueur = GDict["playlist"][playerindex];
+        GDict["joueurs"][joueur]["ingame"] = false;
+        playerindex += 1;
+        tourJoueur();
+    }
+}
+
+function suivant() {
+    if (playerindex >= GDict["playlist"].length - 1) {
+        openResumePartie();
+    } else {
+        const joueur = GDict["playlist"][playerindex];
+        GDict["joueurs"][joueur]["ingame"] = false;
+        playerindex += 1;
+        tourJoueur();
+    }
+}
+
+function openResumePartie() {
+    document.getElementById("tourjoueur").classList.add("hidden");
+    document.getElementById("resumepartie").classList.remove("hidden");
 }
