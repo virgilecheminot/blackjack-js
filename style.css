@@ -34,12 +34,12 @@ h1, h2, h3 {
     margin-right: 2.5rem;
 }
 
-#player-score-zone {
+#player-score-zone, #player-score-zone-resume {
     display: flex;
     flex-wrap: wrap;
 }
 
-#player-score-zone div {
+#player-score-zone div, #player-score-zone-resume div {
     margin-left: 2.5rem;
     margin-right: 2.5rem;
 }
