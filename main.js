@@ -538,7 +538,7 @@ function tourJoueur() {
     li.appendChild(spanM);
     listeAutres.appendChild(li);
 
-    scoreStr = GDict["joueurs"][GDict["playlist"][playerindex]]["score"]; 
+    scoreStr = GDict["joueurs"][GDict["playlist"][playerindex]]["score"];
     if (GDict['joueurs'][GDict["playlist"][playerindex]]["burst"]) {
         scoreStr += ' Perdu !';
     }
@@ -547,6 +547,7 @@ function tourJoueur() {
     if (GDict["joueurs"][GDict["playlist"][playerindex]]["type"] == "1") {
         document.getElementById("rester-button").classList.add("hidden");
         document.getElementById("piocher-button").classList.add("hidden");
+        tourOrdinateur();
     } else if (!GDict["joueurs"][GDict["playlist"][playerindex]]["ingame"]) {
         document.getElementById("rester-button").classList.add("hidden");
         document.getElementById("piocher-button").classList.add("hidden");
@@ -558,7 +559,7 @@ function piocherHumain() {
     const joueur = GDict["playlist"][playerindex];
     let carte = piocheCarte(GDict['pioche'])[0];
     GDict['joueurs'][joueur]['main'].push(carte);
-    GDict['joueurs'][joueur]['score'] += valeurCartes(carte,GDict['joueurs'][joueur]['score']);
+    GDict['joueurs'][joueur]['score'] += valeurCartes(carte, GDict['joueurs'][joueur]['score']);
     if (GDict['joueurs'][joueur]['score'] == 21) {
         GDict['joueurs'][joueur]['ingame'] = false;
     } else if (GDict['joueurs'][joueur]['score'] > 21) {
@@ -566,6 +567,113 @@ function piocherHumain() {
         GDict['joueurs'][joueur]['burst'] = true;
     }
     tourJoueur();
+}
+
+function tourOrdinateur() {
+    const joueur = GDict['playlist'][playerindex];
+    selectContinue(joueur);
+    while (GDict['joueurs'][joueur]['ingame']) {
+        let carte = piocheCarte(GDict['pioche'])[0];
+        GDict['joueurs'][joueur]['main'].push(carte);
+        GDict['joueurs'][joueur]['score'] += valeurCartes(carte, GDict['joueurs'][joueur]['score']);
+        if (GDict['joueurs'][joueur]['score'] == 21) {
+            GDict['joueurs'][joueur]['ingame'] = false;
+        } else if (GDict['joueurs'][joueur]['score'] > 21) {
+            GDict['joueurs'][joueur]['ingame'] = false;
+            GDict['joueurs'][joueur]['burst'] = true;
+        } else {
+            selectContinue(joueur);
+        }
+    }
+    tourJoueur();
+}
+
+function selectContinue(joueur) {
+    const strat = GDict['joueurs'][joueur]['strat'];
+    switch (strat) {
+        case 'alea':
+            continueAlea(joueur);
+            break;
+        case 'risk':
+            continuePara(joueur, 0.8);
+            break;
+        case 'safe':
+            continuePara(joueur, 0.2);
+            break;
+        case 'intel':
+            continueIntel(joueur);
+            break;
+        case 'croupNormal':
+            continueCroupNormal(joueur);
+            break;
+        case 'croupFacile':
+            continueCroupFacile(joueur);
+            break;
+        case 'croupDiff':
+            continueCroupDifficile(joueur);
+            break;
+        default:
+            console.log("erreur choix pioche");
+            break;
+    }
+}
+
+function continueAlea(joueur) {
+    var choice = Math.random() < 0.5 ? true : false;
+    if (choice) {
+        GDict['joueurs'][joueur]['ingame'] = true;
+    } else {
+        GDict['joueurs'][joueur]['ingame'] = false;
+    }
+}
+
+function continuePara(joueur, p) {
+    var choice = Math.random() < p ? true : false;
+    if (choice) {
+        GDict['joueurs'][joueur]['ingame'] = true;
+    } else {
+        GDict['joueurs'][joueur]['ingame'] = false;
+    }
+}
+
+function continueIntel(joueur) {
+    const score = GDict['joueurs'][joueur];
+    var p;
+    if (score <= 10) {
+        p = 1;
+    } else if (score < 21) {
+        p = 1-(score-11)/10;
+    } else {
+        p = 0;
+    }
+    continuePara(joueur, p);
+}
+
+function continueCroupNormal(joueur) {
+    const score = GDict['joueurs'][joueur];
+    if (score < 17) {
+        GDict['joueurs'][joueur]['ingame'] = true;
+    } else {
+        GDict['joueurs'][joueur]['ingame'] = false;
+    }
+}
+
+function continueCroupFacile(joueur) {
+    const score = GDict['joueurs'][joueur];
+    if (score < 16) {
+        GDict['joueurs'][joueur]['ingame'] = true;
+    } else {
+        GDict['joueurs'][joueur]['ingame'] = false;
+    }
+}
+
+function continueCroupDifficile(joueur) {
+    const score = GDict['joueurs'][joueur];
+    if (score < 19) {
+        GDict['joueurs'][joueur]['ingame'] = true;
+    } else {
+        GDict['joueurs'][joueur]['ingame'] = false;
+    }
 }
 
 function rester() {
