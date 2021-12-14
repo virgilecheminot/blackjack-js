@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="style.css" />
         <link
             rel="shortcut icon"
-            href="https://cdn-icons-png.flaticon.com/512/3004/3004163.png"
+            href="logo.png"
             type="image/png"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,8 +25,13 @@
             href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap"
             rel="stylesheet"
         />
-        <title>Jeu du Blackjack</title>
+        <title>blackjack.</title>
     </head>
+    <style>
+        .hidden {
+            display: none !important;
+        }
+    </style>
 
     <body onload="loadMainMenu()">
         <header>
@@ -35,7 +40,7 @@
             </div>
             <div style="display: flex">
                 <a href="https://virgilecheminot.github.io/blackjack/">
-                    <button style="background: transparent; color: white;">
+                    <button style="background: transparent; color: white">
                         À propos
                     </button>
                 </a>
@@ -216,7 +221,7 @@
                 <h2 style="color: #50fa7b">Premier tour</h2>
                 <div id="player-score-zone"></div>
 
-                <div id="croupier-score-zone" style="margin-top: 1rem;">
+                <div id="croupier-score-zone" style="margin-top: 1rem">
                     <h3>Croupier :</h3>
                     <p id="coupier-score-first"></p>
                     <p id="main-croup-first"></p>
@@ -267,7 +272,10 @@
             <div id="resumepartie" class="main-game-window hidden">
                 <h2 style="color: #bd93f9">Résumé de la partie</h2>
                 <div id="player-score-zone-resume"></div>
-                <div id="croupier-score-zone-resume" style="margin-top: 1rem;"></div>
+                <div
+                    id="croupier-score-zone-resume"
+                    style="margin-top: 1rem"
+                ></div>
 
                 <div class="bottom">
                     <button onclick="returnToMenu()" class="violet">
@@ -276,17 +284,18 @@
                 </div>
             </div>
 
-            <div>
-                <br><br>
-            </div>
+            <div><br /><br /></div>
         </main>
 
         <footer>
-            <div> </div>
+            <div></div>
             <div>
-                <a href="https://virgile.tech" style="text-decoration: none;"><span style="color: #ff79c6;">© 2021</span> Virgile Cheminot</a>
+                <a href="https://virgile.tech" style="text-decoration: none"
+                    ><span style="color: #ff79c6">© 2021</span> Virgile
+                    Cheminot</a
+                >
             </div>
-            <div> </div>
+            <div></div>
         </footer>
 
         <script src="main.js"></script>
