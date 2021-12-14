@@ -124,8 +124,9 @@
                         type="text"
                         name="name"
                         id="name"
-                        size="10"
+                        size="15"
                         onkeyup="stoppedTypingCreate()"
+                        maxlength="15"
                     />
                 </div>
 
@@ -215,7 +216,7 @@
                 <h2 style="color: #50fa7b">Premier tour</h2>
                 <div id="player-score-zone"></div>
 
-                <div id="croupier-score-zone">
+                <div id="croupier-score-zone" style="margin-top: 1rem;">
                     <h3>Croupier :</h3>
                     <p id="coupier-score-first"></p>
                     <p id="main-croup-first"></p>
@@ -266,7 +267,7 @@
             <div id="resumepartie" class="main-game-window hidden">
                 <h2 style="color: #bd93f9">Résumé de la partie</h2>
                 <div id="player-score-zone-resume"></div>
-                <div id="croupier-score-zone-resume"></div>
+                <div id="croupier-score-zone-resume" style="margin-top: 1rem;"></div>
 
                 <div class="bottom">
                     <button onclick="returnToMenu()" class="violet">
@@ -274,12 +275,16 @@
                     </button>
                 </div>
             </div>
+
+            <div>
+                <br><br>
+            </div>
         </main>
 
         <footer>
             <div> </div>
             <div>
-                <a href="virgile.tech" style="text-decoration: none;"><span style="color: #ff79c6;">© 2021</span> Virgile Cheminot</a>
+                <a href="https://virgile.tech" style="text-decoration: none;"><span style="color: #ff79c6;">© 2021</span> Virgile Cheminot</a>
             </div>
             <div> </div>
         </footer>

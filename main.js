@@ -283,7 +283,7 @@ function loadChoixMises() {
             var label = document.createElement("label");
             var input = document.createElement("input");
             label.setAttribute("for", idstr);
-            label.innerHTML = joueur + " :";
+            label.innerHTML = joueur + " (" + GDict['joueurs'][joueur]['wallet'] + " OC) :";
             input.setAttribute("type", "text");
             input.id = idstr;
             input.setAttribute("size", "5");
@@ -291,6 +291,7 @@ function loadChoixMises() {
                 stoppedTypingMises(idstr);
             };
             input.value = "";
+            div.style = "display: flex; margin: 0.5rem";
             div.appendChild(label);
             div.appendChild(input);
             listMise.appendChild(div);
@@ -833,7 +834,7 @@ function loadResume() {
 
         div.id = idstr;
 
-        scoreStr = GDict["joueurs"][joueur]["score"];
+        scoreStr = "Score : " + GDict["joueurs"][joueur]["score"];
         if (GDict["joueurs"][joueur]["blackjack"]) {
             scoreStr += " - Blackjack !";
         } else if (GDict["joueurs"][joueur]["burst"]) {
@@ -842,7 +843,7 @@ function loadResume() {
         p.innerHTML = scoreStr;
 
         main = GDict["joueurs"][joueur]["main"];
-        handStr = "";
+        handStr = "Main : ";
         for (let i = 0; i < main.length - 1; i++) {
             const element = main[i];
             handStr += element + ", ";
@@ -863,7 +864,7 @@ function loadResume() {
     var phand = document.createElement("p");
     h3.innerHTML = "Croupier :";
 
-    scoreStr = GDict["croupier"]["score"];
+    scoreStr = "Score : " + GDict["croupier"]["score"];
     if (GDict["croupier"]["blackjack"]) {
         scoreStr += " - Blackjack !";
     } else if (GDict["croupier"]["burst"]) {
@@ -872,7 +873,7 @@ function loadResume() {
     p.innerHTML = scoreStr;
 
     main = GDict["croupier"]["main"];
-    handStr = "";
+    handStr = "Main : ";
     for (let i = 0; i < main.length - 1; i++) {
         const element = main[i];
         handStr += element + ", ";
@@ -959,6 +960,9 @@ function clearData() {
         GDict["joueurs"][joueur]["ingame"] = true;
         GDict["joueurs"][joueur]["blackjack"] = false;
         GDict["joueurs"][joueur]["burst"] = false;
+        if (GDict["joueurs"][joueur]["wallet"] < 1) {
+            delete GDict["joueurs"][joueur];
+        }
     }
     GDict["croupier"]["score"] = 0;
     GDict["croupier"]["main"] = [];
