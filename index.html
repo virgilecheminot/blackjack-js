@@ -11,192 +11,277 @@
             href="https://cdn-icons-png.flaticon.com/512/3004/3004163.png"
             type="image/png"
         />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bakbak+One&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap"
+            rel="stylesheet"
+        />
         <title>Jeu du Blackjack</title>
     </head>
 
     <body onload="loadMainMenu()">
-        <h1>Jeu du Blackjack</h1>
-
-        <div id="landingpage" class="main-game-window hidden">
-            <h2>Menu principal</h2>
-            <div class="inlineflex">
-                <div>
-                    <h3>Liste des joueurs</h3>
-                    <ul id="player-list"></ul>
-                    <button
-                        id="remove-player-button"
-                        onclick="openRemovePlayer()"
-                    >
-                        Retirer un joueur
-                    </button>
-                    <button id="add-player-button" onclick="openNewPlayer()">
-                        Ajouter un joueur
-                    </button>
-                </div>
-                <div>
-                    <h3>Liste des victoires</h3>
-                    <ul id="victory-list"></ul>
-                </div>
-            </div>
-            <div class="bottom">
-                <button id="exit-button" onclick="fermer()">Quitter</button>
-                <button id="new-game-button" onclick="openChoixMises()">
-                    Nouvelle partie
-                </button>
-            </div>
-        </div>
-
-        <div id="removeplayer" class="main-game-window hidden">
-            <h2>Retirer un joueur</h2>
+        <header>
             <div>
-                <label for="player-list-select">Selectioner un joueur :</label>
-                <select
-                    name="player-list-select"
-                    id="player-list-select"
-                ></select>
+                <h1>blackjack.</h1>
             </div>
-
-            <div class="bottom">
-                <button
-                    id="annuler-remove-button"
-                    onclick="removeReturnToMenu()"
-                >
-                    Annuler
-                </button>
-                <button id="confirm-remove-button" onclick="removePlayer()">
-                    Retirer
-                </button>
+            <div style="display: flex">
+                <a href="https://virgilecheminot.github.io/blackjack/">
+                    <button style="background: transparent; color: white;">
+                        À propos
+                    </button>
+                </a>
+                <a href="https://github.com/virgilecheminot/blackjack/tree/interface">
+                    <button class="green">GitHub</button>
+                </a>
             </div>
-        </div>
+        </header>
 
-        <div id="createplayer" class="main-game-window hidden">
-            <h2>Création du joueur</h2>
-            <label for="name">Nom :</label>
-            <input
-                type="text"
-                name="name"
-                id="name"
-                size="10"
-                onkeyup="stoppedTypingCreate()"
-            /><br />
-
-            <label for="type">Type :</label>
-            <select name="type" id="type" onchange="stratOnChange()">
-                <option value="0">Humain</option>
-                <option value="1">Ordinateur</option></select
-            ><br />
-
-            <label for="strat">Stratégie de pioche :</label>
-            <select name="strat" id="strat" required disabled="disabled">
-                <option value="alea">Aléatoire</option>
-                <option value="risk">Risqué</option>
-                <option value="safe">Sécurisé</option>
-                <option value="intel">Intelligent</option>
-                <option value="croupNormal">Croupier Normal</option>
-                <option value="croupFacile">Croupier Facile</option>
-                <option value="croupDiff">Croupier Difficile</option></select
-            ><br />
-
-            <label for="stratmise">Stratégie de mise :</label>
-            <select
-                name="stratmise"
-                id="stratmise"
-                required
-                disabled="disabled"
-            >
-                <option value="miseAlea">Mise aléatoire</option>
-                <option value="miseFaible">Mise faible</option>
-                <option value="miseForte">Mise forte</option>
-            </select>
-
-            <div class="bottom">
-                <button id="annulerCreateButton" onclick="createReturnToMenu()">
-                    Annuler
-                </button>
-                <button
-                    id="confirm-add-player-button"
-                    disabled
-                    onclick="addPlayer()"
-                >
-                    Ajouter
-                </button>
-            </div>
-        </div>
-
-        <div id="choixmises" class="main-game-window hidden">
-            <h2>Choix des mises</h2>
-            <div id="mises-list"></div>
-
-            <div class="bottom">
-                <button id="annuler-mises-button" onclick="misesReturnToMenu()">
-                    Annuler
-                </button>
-                <button
-                    disabled
-                    id="first-round-button"
-                    onclick="openFirstRound()"
-                >
-                    Premier tour
-                </button>
-            </div>
-        </div>
-
-        <div id="premiertour" class="main-game-window hidden">
-            <h2>Premier tour</h2>
-            <div id="player-score-zone"></div>
-
-            <div id="croupier-score-zone">
-                <h3>Croupier :</h3>
-                <p id="coupier-score-first"></p>
-                <p id="main-croup-first"></p>
-            </div>
-            <div class="bottom">
-                <button onclick="openTourJoueur()">Suivant</button>
-            </div>
-        </div>
-
-        <div id="tourjoueur" class="main-game-window hidden">
-            <h2 id="title-tour-joueur">Tour de joueur 3</h2>
-            <div class="inlineflex">
-                <div id="scoreautres">
-                    <h3>Score des autres joueurs :</h3>
-                    <ul id="list-score-autres"></ul>
+        <main>
+            <div id="landingpage" class="main-game-window hidden">
+                <h2 style="color: #ff79c6">Menu principal</h2>
+                <div class="inlineflex">
+                    <div>
+                        <h3>Liste des joueurs</h3>
+                        <ul id="player-list"></ul>
+                        <button
+                            class="pink"
+                            id="remove-player-button"
+                            onclick="openRemovePlayer()"
+                        >
+                            Retirer
+                        </button>
+                        <button
+                            class="pink"
+                            id="add-player-button"
+                            onclick="openNewPlayer()"
+                        >
+                            Ajouter
+                        </button>
+                    </div>
+                    <div>
+                        <h3>Liste des victoires</h3>
+                        <ul id="victory-list"></ul>
+                    </div>
                 </div>
-                <div id="votrescore" style="text-align: center">
-                    <h3>Votre score :</h3>
-                    <h2 id="score-joueur"></h2>
+                <div class="bottom">
+                    <button id="exit-button" class="pink" onclick="fermer()">
+                        Quitter
+                    </button>
+                    <button
+                        id="new-game-button"
+                        class="pink"
+                        onclick="openChoixMises()"
+                    >
+                        Nouvelle partie
+                    </button>
                 </div>
             </div>
 
-            <div class="bottom">
-                <button id="rester-button" class="" onclick="rester()">
-                    Rester
-                </button>
-                <button id="piocher-button" class="" onclick="piocherHumain()">
-                    Piocher
-                </button>
-                <button
-                    id="suivant-ordi-button"
-                    class="hidden"
-                    onclick="suivant()"
-                >
-                    Suivant
-                </button>
-            </div>
-        </div>
+            <div id="removeplayer" class="main-game-window hidden">
+                <h2 style="color: #ffb86c">Retirer un joueur</h2>
+                <div>
+                    <label for="player-list-select"
+                        >Selectioner un joueur :</label
+                    >
+                    <select
+                        name="player-list-select"
+                        id="player-list-select"
+                    ></select>
+                </div>
 
-        <div id="resumepartie" class="main-game-window hidden">
-            <h2>Résumé de la partie</h2>
-            <div id="player-score-zone-resume"></div>
-            <div id="croupier-score-zone-resume"></div>
-
-            <div class="bottom">
-                <button onclick="returnToMenu()">Suivant</button>
+                <div class="bottom">
+                    <button
+                        class="orange"
+                        id="annuler-remove-button"
+                        onclick="removeReturnToMenu()"
+                    >
+                        Annuler
+                    </button>
+                    <button
+                        id="confirm-remove-button"
+                        class="orange"
+                        onclick="removePlayer()"
+                    >
+                        Retirer
+                    </button>
+                </div>
             </div>
-        </div>
+
+            <div id="createplayer" class="main-game-window hidden">
+                <h2 style="color: #ffb86c">Création du joueur</h2>
+                <div style="display: flex; margin: 0.5rem">
+                    <label for="name">Nom :</label>
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        size="10"
+                        onkeyup="stoppedTypingCreate()"
+                    />
+                </div>
+
+                <div style="display: flex; margin: 0.5rem">
+                    <label for="type">Type : </label>
+                    <select name="type" id="type" onchange="stratOnChange()">
+                        <option value="0">Humain</option>
+                        <option value="1">Ordinateur</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; margin: 0.5rem">
+                    <label for="strat">Stratégie de pioche :</label>
+                    <select
+                        name="strat"
+                        id="strat"
+                        required
+                        disabled="disabled"
+                    >
+                        <option value="alea">Aléatoire</option>
+                        <option value="risk">Risqué</option>
+                        <option value="safe">Sécurisé</option>
+                        <option value="intel">Intelligent</option>
+                        <option value="croupNormal">Croupier Normal</option>
+                        <option value="croupFacile">Croupier Facile</option>
+                        <option value="croupDiff">Croupier Difficile</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; margin: 0.5rem">
+                    <label for="stratmise">Stratégie de mise :</label>
+                    <select
+                        name="stratmise"
+                        id="stratmise"
+                        required
+                        disabled="disabled"
+                    >
+                        <option value="miseAlea">Mise aléatoire</option>
+                        <option value="miseFaible">Mise faible</option>
+                        <option value="miseForte">Mise forte</option>
+                    </select>
+                </div>
+
+                <div class="bottom">
+                    <button
+                        class="orange"
+                        id="annulerCreateButton"
+                        onclick="createReturnToMenu()"
+                    >
+                        Annuler
+                    </button>
+                    <button
+                        class="orange"
+                        id="confirm-add-player-button"
+                        disabled
+                        onclick="addPlayer()"
+                    >
+                        Ajouter
+                    </button>
+                </div>
+            </div>
+
+            <div id="choixmises" class="main-game-window hidden">
+                <h2 style="color: #ffb86c">Choix des mises</h2>
+                <div id="mises-list"></div>
+
+                <div class="bottom">
+                    <button
+                        class="orange"
+                        id="annuler-mises-button"
+                        onclick="misesReturnToMenu()"
+                    >
+                        Annuler
+                    </button>
+                    <button
+                        class="orange"
+                        disabled
+                        id="first-round-button"
+                        onclick="openFirstRound()"
+                    >
+                        Premier tour
+                    </button>
+                </div>
+            </div>
+
+            <div id="premiertour" class="main-game-window hidden">
+                <h2 style="color: #50fa7b">Premier tour</h2>
+                <div id="player-score-zone"></div>
+
+                <div id="croupier-score-zone">
+                    <h3>Croupier :</h3>
+                    <p id="coupier-score-first"></p>
+                    <p id="main-croup-first"></p>
+                </div>
+                <div class="bottom">
+                    <button onclick="openTourJoueur()" class="green">
+                        Suivant
+                    </button>
+                </div>
+            </div>
+
+            <div id="tourjoueur" class="main-game-window hidden">
+                <h2 id="title-tour-joueur" style="color: #50fa7b">
+                    Tour de joueur 3
+                </h2>
+                <div class="inlineflex">
+                    <div id="scoreautres">
+                        <h3>Score des autres joueurs :</h3>
+                        <ul id="list-score-autres"></ul>
+                    </div>
+                    <div id="votrescore" style="text-align: center">
+                        <h3>Votre score :</h3>
+                        <h2 id="score-joueur" style="color: #50fa7b"></h2>
+                    </div>
+                </div>
+
+                <div class="bottom">
+                    <button id="rester-button" class="green" onclick="rester()">
+                        Rester
+                    </button>
+                    <button
+                        class="green"
+                        id="piocher-button"
+                        onclick="piocherHumain()"
+                    >
+                        Piocher
+                    </button>
+                    <button
+                        class="green hidden"
+                        id="suivant-ordi-button"
+                        onclick="suivant()"
+                    >
+                        Suivant
+                    </button>
+                </div>
+            </div>
+
+            <div id="resumepartie" class="main-game-window hidden">
+                <h2 style="color: #bd93f9">Résumé de la partie</h2>
+                <div id="player-score-zone-resume"></div>
+                <div id="croupier-score-zone-resume"></div>
+
+                <div class="bottom">
+                    <button onclick="returnToMenu()" class="violet">
+                        Suivant
+                    </button>
+                </div>
+            </div>
+        </main>
 
         <footer>
-            <p>© 2021 Virgile Cheminot</p>
+            <div> </div>
+            <div>
+                <a href="virgile.tech" style="text-decoration: none;"><span style="color: #ff79c6;">© 2021</span> Virgile Cheminot</a>
+            </div>
+            <div> </div>
         </footer>
 
         <script src="main.js"></script>
