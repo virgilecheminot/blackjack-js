@@ -154,7 +154,7 @@ function loadMainMenu() {
     } else {
         for (const [joueur, vic] of Object.entries(GDict["victoires"])) {
             const li = document.createElement("li");
-            li.appendChild(document.createTextNode(joueur + " : " + vic));
+            li.appendChild(document.createTextNode(joueur + " : " + vic));
             victoryList.appendChild(li);
         }
     }
@@ -283,7 +283,8 @@ function loadChoixMises() {
             var label = document.createElement("label");
             var input = document.createElement("input");
             label.setAttribute("for", idstr);
-            label.innerHTML = joueur + " (" + GDict['joueurs'][joueur]['wallet'] + " OC) :";
+            label.innerHTML =
+                joueur + " (" + GDict["joueurs"][joueur]["wallet"] + " OC) :";
             input.setAttribute("type", "text");
             input.id = idstr;
             input.setAttribute("size", "5");
@@ -402,7 +403,7 @@ function loadPremierTour() {
         var h3 = document.createElement("h3");
         var p = document.createElement("p");
         var phand = document.createElement("p");
-        h3.innerHTML = joueur + " :";
+        h3.innerHTML = joueur + " :";
         p.id = idstr;
         p.innerHTML = premierTour(joueur);
         main = GDict["joueurs"][joueur]["main"];
@@ -474,7 +475,7 @@ function premierTourCroup() {
     if (GDict["croupier"]["score"] == 21) {
         GDict["croupier"]["blackjack"] = true;
         GDict["croupier"]["ingame"] = false;
-        returnStr += " : Blackjack !";
+        returnStr += " : Blackjack !";
     }
     return returnStr;
 }
@@ -512,7 +513,7 @@ function tourJoueur() {
             var spanT = document.createElement("span");
             var spanS = document.createElement("span");
             var spanM = document.createElement("span");
-            spanT.innerHTML = j + " : ";
+            spanT.innerHTML = j + " : ";
             spanS.innerHTML = GDict["joueurs"][j]["score"] + " ";
             main = GDict["joueurs"][j]["main"];
             handStr = "";
@@ -533,7 +534,7 @@ function tourJoueur() {
     var spanT = document.createElement("span");
     var spanS = document.createElement("span");
     var spanM = document.createElement("span");
-    spanT.innerHTML = "Croupier : ";
+    spanT.innerHTML = "Croupier : ";
     spanS.innerHTML = GDict["croupier"]["score"] + " ";
     main = GDict["croupier"]["main"];
     handStr = "";
@@ -610,7 +611,7 @@ function tourCroupier() {
         var spanT = document.createElement("span");
         var spanS = document.createElement("span");
         var spanM = document.createElement("span");
-        spanT.innerHTML = j + " : ";
+        spanT.innerHTML = j + " : ";
         spanS.innerHTML = GDict["joueurs"][j]["score"] + " ";
         main = GDict["joueurs"][j]["main"];
         handStr = "";
@@ -830,11 +831,11 @@ function loadResume() {
         var p = document.createElement("p");
         var phand = document.createElement("p");
         var pgain = document.createElement("p");
-        h3.innerHTML = joueur + " :";
+        h3.innerHTML = joueur + " :";
 
         div.id = idstr;
 
-        scoreStr = "Score : " + GDict["joueurs"][joueur]["score"];
+        scoreStr = "Score : " + GDict["joueurs"][joueur]["score"];
         if (GDict["joueurs"][joueur]["blackjack"]) {
             scoreStr += " - Blackjack !";
         } else if (GDict["joueurs"][joueur]["burst"]) {
@@ -843,7 +844,7 @@ function loadResume() {
         p.innerHTML = scoreStr;
 
         main = GDict["joueurs"][joueur]["main"];
-        handStr = "Main : ";
+        handStr = "Main : ";
         for (let i = 0; i < main.length - 1; i++) {
             const element = main[i];
             handStr += element + ", ";
@@ -851,7 +852,7 @@ function loadResume() {
         handStr += main[main.length - 1];
         phand.innerHTML = handStr;
 
-        pgain.innerHTML = "Gain : " + gain(joueur) + " OC";
+        pgain.innerHTML = "Gain : " + gain(joueur) + " OC";
 
         div.appendChild(h3);
         div.appendChild(p);
@@ -862,9 +863,9 @@ function loadResume() {
     var h3 = document.createElement("h3");
     var p = document.createElement("p");
     var phand = document.createElement("p");
-    h3.innerHTML = "Croupier :";
+    h3.innerHTML = "Croupier :";
 
-    scoreStr = "Score : " + GDict["croupier"]["score"];
+    scoreStr = "Score : " + GDict["croupier"]["score"];
     if (GDict["croupier"]["blackjack"]) {
         scoreStr += " - Blackjack !";
     } else if (GDict["croupier"]["burst"]) {
@@ -873,7 +874,7 @@ function loadResume() {
     p.innerHTML = scoreStr;
 
     main = GDict["croupier"]["main"];
-    handStr = "Main : ";
+    handStr = "Main : ";
     for (let i = 0; i < main.length - 1; i++) {
         const element = main[i];
         handStr += element + ", ";
