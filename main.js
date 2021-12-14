@@ -601,7 +601,7 @@ function tourCroupier() {
     }
 
     document.getElementById("title-tour-joueur").innerHTML =
-        "Tour de du croupier";
+        "Tour du croupier";
     listeAutres = document.getElementById("list-score-autres");
     listeAutres.innerHTML = "";
     for (const [j] of Object.entries(GDict["joueurs"])) {
