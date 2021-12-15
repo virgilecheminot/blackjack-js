@@ -83,6 +83,21 @@ h3 {
     }
 }
 
+.moutal {
+    position: fixed;
+    bottom: 2.35rem;
+    animation: 60s linear infinite running slidein;
+    filter: opacity(.2);
+}
+
+@keyframes slidein {
+    from {
+        margin-left: -2%;
+    } to {
+        margin-left: 100%;
+    }
+}
+
 .inlineflex div {
     margin-left: 2.5rem;
     margin-right: 2.5rem;
