@@ -240,6 +240,8 @@ function addPlayer() {
     var name = document.getElementById("name").value;
     if (Object.keys(GDict["joueurs"]).includes(name)) {
         window.alert("Le nom est déjà pris, veuillez en entrer un autre");
+    } else if (name.length == 0) {
+        window.alert("Le nom du joueur ne peut pas être vide")
     } else {
         var type = document.getElementById("type").value;
         var strat = document.getElementById("strat").value;

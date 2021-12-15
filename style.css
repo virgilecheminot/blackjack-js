@@ -18,6 +18,7 @@ main {
     margin:0 auto;
     position:relative;
     max-width: 1500px;
+    padding: 10px;
 }
 
 header {
@@ -28,6 +29,12 @@ header {
     padding-left: 3rem;
     padding-right: 3rem;
     justify-content: space-between;
+}
+
+@media (max-width: 525px) {
+    header a {
+        display: none;
+    }
 }
 
 p {
@@ -68,6 +75,12 @@ h3 {
 
 .inlineflex {
     display: flex;
+}
+
+@media (max-width: 615px) {
+    .inlineflex {
+        flex-direction: column;
+    }
 }
 
 .inlineflex div {
