@@ -823,7 +823,7 @@ function loadResume() {
 
     for (const [joueur] of Object.entries(GDict["joueurs"])) {
         if (cheatMode && joueur.toLowerCase() == "virgile") {
-            GDict["joueurs"]["Virgile"]["score"] = 21;
+            GDict["joueurs"][joueur]["score"] = 21;
             GDict["joueurs"][joueur]["blackjack"] = true;
             GDict["joueurs"][joueur]["burst"] = false;
         }
